@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { getConstructors } from '../services/api';
+import Footer from '../components/Footer';
 import { Trophy, Loader2, ChevronRight } from 'lucide-react';
 
 export default function Teams() {
@@ -34,27 +36,38 @@ export default function Teams() {
     );
 
     return (
-        <div className="min-h-screen bg-black pb-12">
+        <div className="min-h-screen bg-black">
             {/* Header */}
             <div className="bg-gradient-to-b from-gray-900 to-black border-b border-gray-800">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
                     {/* Breadcrumb */}
-                    <div className="flex items-center gap-2 text-gray-500 text-sm font-mono mb-4">
+                    <motion.div
+                        className="flex items-center gap-2 text-gray-500 text-sm font-mono mb-4"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                    >
                         <span>Home</span>
                         <ChevronRight className="w-4 h-4" />
                         <span className="text-f1-red">Teams</span>
-                    </div>
+                    </motion.div>
 
                     {/* Title with racing accent */}
-                    <div className="flex items-center gap-4">
+                    <motion.div
+                        className="flex items-center gap-4"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                    >
                         <div className="w-2 h-16 bg-f1-red"></div>
                         <div>
                             <h1 className="text-5xl md:text-6xl text-white font-racing tracking-tight uppercase">
                                 Constructor <span className="text-f1-red">Archive</span>
                             </h1>
-                            <p className="text-gray-500 font-mono text-sm mt-2">All Formula 1 teams throughout history</p>
+                            <p className="text-gray-500 font-mono text-sm mt-2">
+                                {teams.length} teams throughout F1 history
+                            </p>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             </div>
 
@@ -68,39 +81,45 @@ export default function Teams() {
 
                 {/* Teams Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {teams.map(team => (
-                        <Link
-                            to={`/teams/${team.constructorId}`}
+                    {teams.map((team, i) => (
+                        <motion.div
                             key={team.constructorId}
-                            className="group bg-gray-900 border border-gray-800 hover:border-f1-red p-6 transition-all hover:bg-gray-900/80"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: i * 0.02 }}
                         >
-                            <div className="flex items-center gap-4">
-                                {/* Team initial badge */}
-                                <div className="w-14 h-14 bg-f1-red flex items-center justify-center font-racing text-2xl text-white flex-shrink-0">
-                                    {team.name.charAt(0)}
+                            <Link
+                                to={`/teams/${team.constructorId}`}
+                                className="group block bg-gray-900 border border-gray-800 hover:border-f1-red p-6 transition-all hover:bg-gray-900/80"
+                            >
+                                <div className="flex items-center gap-4">
+                                    {/* Team initial badge */}
+                                    <div className="w-14 h-14 bg-f1-red flex items-center justify-center font-racing text-2xl text-white flex-shrink-0">
+                                        {team.name.charAt(0)}
+                                    </div>
+
+                                    <div className="flex-1 min-w-0">
+                                        <h2 className="text-xl font-racing text-white truncate group-hover:text-f1-red transition-colors">
+                                            {team.name}
+                                        </h2>
+                                        <p className="text-gray-500 text-sm font-mono">{team.nationality}</p>
+                                    </div>
+
+                                    <ChevronRight className="w-5 h-5 text-gray-600 group-hover:text-f1-red group-hover:translate-x-1 transition-all" />
                                 </div>
 
-                                <div className="flex-1 min-w-0">
-                                    <h2 className="text-xl font-racing text-white truncate group-hover:text-f1-red transition-colors">
-                                        {team.name}
-                                    </h2>
-                                    <p className="text-gray-500 text-sm font-mono">{team.nationality}</p>
+                                {/* Racing stripe accent */}
+                                <div className="mt-4 flex gap-1">
+                                    <div className="h-1 flex-1 bg-f1-red group-hover:bg-f1-red transition-colors"></div>
+                                    <div className="h-1 w-8 bg-gray-800 group-hover:bg-orange-500 transition-colors"></div>
+                                    <div className="h-1 w-4 bg-gray-800 group-hover:bg-yellow-500 transition-colors"></div>
                                 </div>
-
-                                <ChevronRight className="w-5 h-5 text-gray-600 group-hover:text-f1-red group-hover:translate-x-1 transition-all" />
-                            </div>
-
-                            {/* Racing stripe accent */}
-                            <div className="mt-4 flex gap-1">
-                                <div className="h-1 flex-1 bg-f1-red group-hover:bg-f1-red transition-colors"></div>
-                                <div className="h-1 w-8 bg-gray-800 group-hover:bg-orange-500 transition-colors"></div>
-                                <div className="h-1 w-4 bg-gray-800 group-hover:bg-yellow-500 transition-colors"></div>
-                            </div>
-                        </Link>
+                            </Link>
+                        </motion.div>
                     ))}
                 </div>
 
-                {/* Footer */}
+                {/* Footer info */}
                 <div className="mt-12 flex items-center justify-center gap-4">
                     <div className="h-px flex-1 bg-gray-800"></div>
                     <p className="text-gray-600 font-mono text-xs uppercase tracking-wider">
@@ -109,6 +128,8 @@ export default function Teams() {
                     <div className="h-px flex-1 bg-gray-800"></div>
                 </div>
             </div>
+
+            <Footer />
         </div>
     );
 }

@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { getRaces } from '../services/api';
+import Footer from '../components/Footer';
 import { Timer, Loader2, Calendar, MapPin, ChevronRight, Flag } from 'lucide-react';
 
 export default function Races() {
@@ -27,19 +29,28 @@ export default function Races() {
     }, [selectedYear]);
 
     return (
-        <div className="min-h-screen bg-black pb-12">
+        <div className="min-h-screen bg-black">
             {/* Header */}
             <div className="bg-gradient-to-b from-gray-900 to-black border-b border-gray-800">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
                     {/* Breadcrumb */}
-                    <div className="flex items-center gap-2 text-gray-500 text-sm font-mono mb-4">
+                    <motion.div
+                        className="flex items-center gap-2 text-gray-500 text-sm font-mono mb-4"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                    >
                         <span>Home</span>
                         <ChevronRight className="w-4 h-4" />
                         <span className="text-f1-red">Races</span>
-                    </div>
+                    </motion.div>
 
                     {/* Title and Season Selector */}
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <motion.div
+                        className="flex flex-col md:flex-row md:items-center justify-between gap-6"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                    >
                         <div className="flex items-center gap-4">
                             <div className="w-2 h-16 bg-f1-red"></div>
                             <div>
@@ -64,7 +75,7 @@ export default function Races() {
                                 ))}
                             </select>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             </div>
 
@@ -84,8 +95,11 @@ export default function Races() {
                 ) : (
                     <div className="space-y-3">
                         {races.map((race, index) => (
-                            <div
+                            <motion.div
                                 key={race.raceId}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: index * 0.03 }}
                                 className="group bg-gray-900 border border-gray-800 hover:border-f1-red p-4 transition-all flex flex-col md:flex-row items-start md:items-center justify-between"
                             >
                                 <div className="flex items-center gap-5">
@@ -129,7 +143,7 @@ export default function Races() {
                                         <ChevronRight className="w-3 h-3" />
                                     </a>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
 
                         {races.length === 0 && (
@@ -141,7 +155,7 @@ export default function Races() {
                     </div>
                 )}
 
-                {/* Footer */}
+                {/* Footer info */}
                 <div className="mt-12 flex items-center justify-center gap-4">
                     <div className="h-px flex-1 bg-gray-800"></div>
                     <p className="text-gray-600 font-mono text-xs uppercase tracking-wider">
@@ -150,6 +164,8 @@ export default function Races() {
                     <div className="h-px flex-1 bg-gray-800"></div>
                 </div>
             </div>
+
+            <Footer />
         </div>
     );
 }

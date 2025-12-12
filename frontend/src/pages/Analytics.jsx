@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import {
     getDNFCauses, getPitStopEfficiency, getPoleToWin, getGridPerformance,
     getQualifyingProgression, getFastestLaps, getTeammateBattles, getPointsEfficiency,
@@ -8,6 +9,7 @@ import {
     PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis,
     CartesianGrid, Legend, LineChart, Line, ScatterChart, Scatter, ZAxis
 } from 'recharts';
+import Footer from '../components/Footer';
 import { Loader2, TrendingUp, ChevronRight, Trophy, Timer, Zap, Target, Users, Flag } from 'lucide-react';
 
 const COLORS = ['#E10600', '#FF6B6B', '#FFD93D', '#6BCB77', '#4D96FF', '#9D4EDD', '#F72585', '#4CC9F0'];
@@ -107,7 +109,7 @@ export default function Analytics() {
     ];
 
     return (
-        <div className="min-h-screen bg-black pb-12">
+        <div className="min-h-screen bg-black">
             {/* Header */}
             <div className="bg-gradient-to-b from-gray-900 to-black border-b border-gray-800">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -412,6 +414,8 @@ export default function Analytics() {
                     </div>
                 )}
             </div>
+
+            <Footer />
         </div>
     );
 }
