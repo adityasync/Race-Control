@@ -4,14 +4,15 @@ import os
 import re
 
 # Database Configuration
-DB_USER = 'racinglines'
-DB_PASS = 'checkeredflag'
-DB_NAME = 'f1pedia'
-DB_HOST = 'localhost'
-DB_PORT = '5432'
-
-# Database Connection URL
-DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+if os.getenv('DATABASE_URL'):
+    DATABASE_URL = os.getenv('DATABASE_URL')
+else:
+    DB_USER = 'racinglines'
+    DB_PASS = 'checkeredflag'
+    DB_NAME = 'f1pedia'
+    DB_HOST = 'localhost'
+    DB_PORT = '5432'
+    DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
 # Column Mapping Helper
 def camel_to_snake(name):
