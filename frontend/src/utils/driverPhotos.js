@@ -14,7 +14,7 @@ const driverPhotoMap = {
     'Fangio': 'juan_manuel_fangio_8bit.png',
     'Piquet': 'nelson_piquet_8bit.png',
     'Rosberg': 'nico_rosberg_8bit.png',
-    'Hill': 'damon_hill_8bit.png', // Also covers Graham Hill
+    'Hill': 'damon_hill_8bit.png',
     'Räikkönen': 'kimi_raikkonen_8bit.png',
     'Häkkinen': 'mika_hakkinen_8bit.png',
     'Moss': 'stirling_moss_8bit.png',
@@ -38,6 +38,21 @@ const driverPhotoMap = {
     'Norris': 'lando_norris_8bit.png',
     'Sainz': 'carlos_sainz_8bit.png',
     'Russell': 'george_russell_8bit.png',
+    // New additions
+    'Webber': 'mark_webber_8bit.png',
+    'Kubica': 'robert_kubica_8bit.png',
+    'Pérez': 'sergio_perez_8bit.png',
+    'Perez': 'sergio_perez_8bit.png',
+    'Piastri': 'oscar_piastri_8bit.png',
+    'Albon': 'alex_albon_8bit.png',
+    'Stroll': 'lance_stroll_8bit.png',
+    'Tsunoda': 'yuki_tsunoda_8bit.png',
+    'Gasly': 'pierre_gasly_8bit.png',
+    'Ocon': 'esteban_ocon_8bit.png',
+    'Zhou': 'zhou_guanyu_8bit.png',
+    'Magnussen': 'kevin_magnussen_8bit.png',
+    'Hülkenberg': 'nico_hulkenberg_8bit.png',
+    'Hulkenberg': 'nico_hulkenberg_8bit.png',
 };
 
 export function getDriverPhoto(surname) {
