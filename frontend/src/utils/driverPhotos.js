@@ -58,6 +58,18 @@ const driverPhotoMap = {
     'Nakajima': 'kazuki_nakajima_8bit.png',
     'Heidfeld': 'nick_heidfeld_8bit.png',
     'Kovalainen': 'heikki_kovalainen_8bit.png',
+    // Generated Legends & Rookies
+    'Scheckter': 'jody_scheckter_8bit.png',
+    'Hawthorn': 'mike_hawthorn_8bit.png',
+    'P. Hill': 'phil_hill_8bit.png',
+    'Phil Hill': 'phil_hill_8bit.png',
+    'K. Rosberg': 'keke_rosberg_8bit.png',
+    'Keke Rosberg': 'keke_rosberg_8bit.png',
+    'G. Villeneuve': 'gilles_villeneuve_8bit.png',
+    'Gilles Villeneuve': 'gilles_villeneuve_8bit.png',
+    'Sargeant': 'logan_sargeant_8bit.png',
+    'Lawson': 'liam_lawson_8bit.png',
+    'Antonelli': 'kimi_antonelli_8bit.png',
 };
 
 export function getDriverPhoto(surname) {
