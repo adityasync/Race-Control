@@ -70,6 +70,17 @@ const driverPhotoMap = {
     'Sargeant': 'logan_sargeant_8bit.png',
     'Lawson': 'liam_lawson_8bit.png',
     'Antonelli': 'kimi_antonelli_8bit.png',
+    // Mass Batch (Champs & Stars)
+    'Farina': 'nino_farina_8bit.png',
+    'Surtees': 'john_surtees_8bit.png',
+    'Hulme': 'denny_hulme_8bit.png',
+    'Rindt': 'jochen_rindt_8bit.png',
+    'Ickx': 'jacky_ickx_8bit.png',
+    'Regazzoni': 'clay_regazzoni_8bit.png',
+    'Montoya': 'juan_pablo_montoya_8bit.png',
+    'R. Schumacher': 'ralf_schumacher_8bit.png',
+    'Ralf Schumacher': 'ralf_schumacher_8bit.png',
+    'Alesi': 'jean_alesi_8bit.png',
 };
 
 export function getDriverPhoto(surname) {
