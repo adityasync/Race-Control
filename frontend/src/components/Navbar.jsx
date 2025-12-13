@@ -38,7 +38,7 @@ export default function Navbar() {
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isHome && !scrolled && !isOpen
                 ? 'bg-transparent'
                 : 'bg-black/95 backdrop-blur-sm'
-                } ${isOpen ? 'h-screen' : ''}`}
+                }`}
             initial={{ y: -100 }}
             animate={{ y: 0 }}
             transition={{ duration: 0.5 }}
@@ -92,17 +92,35 @@ export default function Navbar() {
 
             {/* Mobile Menu Overlay */}
             <motion.div
-                className={`fixed inset-0 bg-black pt-20 px-6 md:hidden ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
+                className={`fixed inset-0 bg-zinc-950 pt-24 px-6 md:hidden ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
                 initial={{ opacity: 0, x: '100%' }}
                 animate={isOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: '100%' }}
                 transition={{ type: "spring", damping: 20 }}
             >
-                <div className="flex flex-col gap-6 text-2xl font-racing uppercase tracking-wider">
-                    <MobileLink to="/drivers" onClick={() => setIsOpen(false)} text="Drivers" />
-                    <MobileLink to="/teams" onClick={() => setIsOpen(false)} text="Teams" />
-                    <MobileLink to="/circuits" onClick={() => setIsOpen(false)} text="Circuits" />
-                    <MobileLink to="/races" onClick={() => setIsOpen(false)} text="Races" />
-                    <MobileLink to="/analytics" onClick={() => setIsOpen(false)} text="Analytics" />
+                {/* Menu Background Accents */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-f1-red/10 rounded-full blur-[80px]" />
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-600/10 rounded-full blur-[80px]" />
+
+                <div className="relative z-10 flex flex-col h-full">
+                    {/* Menu Logo */}
+                    <div className="mb-8 pl-2">
+                        <img src="/logo.png" alt="F1PEDIA" className="h-12 w-auto opacity-80" />
+                    </div>
+
+                    <div className="flex flex-col gap-2 text-3xl font-racing uppercase tracking-wider">
+                        <MobileLink to="/drivers" onClick={() => setIsOpen(false)} text="Drivers" />
+                        <MobileLink to="/teams" onClick={() => setIsOpen(false)} text="Teams" />
+                        <MobileLink to="/circuits" onClick={() => setIsOpen(false)} text="Circuits" />
+                        <MobileLink to="/races" onClick={() => setIsOpen(false)} text="Races" />
+                        <MobileLink to="/analytics" onClick={() => setIsOpen(false)} text="Analytics" />
+                    </div>
+
+                    {/* Menu Footer */}
+                    <div className="mt-auto mb-8 pt-8 border-t border-gray-900">
+                        <p className="text-gray-600 font-mono text-xs uppercase tracking-widest text-center">
+                            The Complete Encyclopedia of<br />Formula 1 Racing
+                        </p>
+                    </div>
                 </div>
             </motion.div>
 
