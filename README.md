@@ -61,7 +61,7 @@ graph TD
     Repositories -- "JPA/Hibernate" --> DB
 ```
 
-### Data & ML Pipeline
+### Data Pipeline
 
 ```mermaid
 graph LR
@@ -83,18 +83,6 @@ graph LR
         Postgres[(PostgreSQL DB)]
     end
 
-    subgraph ML ["ML Workflow (Offline)"]
-        FeatureEng[feature_engineering.py]
-        Trainer[train_race_predictor.py]
-        XGBoost[[XGBoost Model]]
-        Artifacts[Model Artifacts / Insights]
-        
-        CSV -.-> FeatureEng
-        FeatureEng --> Trainer
-        Trainer --> XGBoost
-        XGBoost --> Artifacts
-    end
-
     Schema --> Postgres
     Loader --> Postgres
 ```
@@ -111,7 +99,6 @@ graph LR
 | **ORM** | Hibernate/JPA | Object-relational mapping |
 | **Database** | PostgreSQL 16 | Relational data storage |
 | **ETL** | Python + Pandas | Data loading from Ergast CSV |
-| **ML** | Scikit-learn + XGBoost | Race outcome predictions |
 
 ---
 
@@ -141,7 +128,7 @@ formula-legacy/
 │   ├── schema.sql           # Database schema
 │   ├── load_data.py         # ETL script
 │   └── requirements.txt
-├── ml/                      # Machine Learning
+├── ml/                      # Machine Learning (Offline Analysis)
 │   ├── feature_engineering.py
 │   ├── train_race_predictor.py
 │   ├── train_points_predictor.py
@@ -200,10 +187,10 @@ formula-legacy/
 - Displays interesting F1 facts while fetching data
 - Eliminates perceived latency on heavy data pages
 
-### 🤖 ML Predictions
-- Race outcome predictions
+### 📈 Predictive Analytics
+- Race outcome probabilities based on historical data
 - Points likelihood scoring
-- Feature-engineered models
+- Statistical regression analysis
 
 ### 🔊 Immersive Audio
 - F1 start lights countdown beeps
