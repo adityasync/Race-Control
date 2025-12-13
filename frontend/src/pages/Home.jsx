@@ -120,7 +120,7 @@ export default function Home() {
                             animate={loaded ? { y: 0 } : {}}
                             transition={{ duration: 1, ease: [0.25, 0.1, 0, 1], delay: 0.5 }}
                         >
-                            <h1 className="text-[8rem] md:text-[12rem] font-racing leading-none tracking-tighter text-white">
+                            <h1 className="text-6xl md:text-[10rem] lg:text-[12rem] font-racing leading-none tracking-tighter text-white">
                                 F1<span className="text-f1-red">PEDIA</span>
                             </h1>
                         </motion.div>
@@ -222,7 +222,7 @@ export default function Home() {
                             <Calendar className="w-5 h-5 text-f1-red" />
                             <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">Through the decades</span>
                         </div>
-                        <h2 className="text-6xl md:text-8xl font-racing">
+                        <h2 className="text-4xl md:text-8xl font-racing">
                             <span className="text-white">75 YEARS OF</span>
                             <br />
                             <span className="text-f1-red">RACING HISTORY</span>
@@ -399,7 +399,7 @@ export default function Home() {
                             <Award className="w-5 h-5 text-f1-red" />
                             <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">The records that define greatness</span>
                         </div>
-                        <h2 className="text-6xl md:text-8xl font-racing text-white">
+                        <h2 className="text-4xl md:text-8xl font-racing text-white">
                             ALL-TIME <span className="text-f1-red">RECORDS</span>
                         </h2>
                     </motion.div>
@@ -456,7 +456,7 @@ export default function Home() {
                             <span className="text-xs font-mono text-gray-600 tracking-widest uppercase">Hall of Fame</span>
                             <div className="h-px w-16 bg-f1-red" />
                         </div>
-                        <h2 className="text-6xl md:text-8xl font-racing">
+                        <h2 className="text-4xl md:text-8xl font-racing">
                             <span className="text-white">WORLD</span> <span className="text-f1-red">CHAMPIONS</span>
                         </h2>
                     </motion.div>
