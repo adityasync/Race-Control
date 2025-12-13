@@ -95,9 +95,40 @@ const driverPhotoMap = {
     'Irvine': 'eddie_irvine_8bit.png',
     'Fisichella': 'giancarlo_fisichella_8bit.png',
     'Frentzen': 'heinz_harald_frentzen_8bit.png',
+    // Batch 2 & 3 & 4 additions
+    'Trulli': 'jarno_trulli_8bit.png',
+    'Panis': 'olivier_panis_8bit.png',
+    'Herbert': 'johnny_herbert_8bit.png',
+    'Brundle': 'martin_brundle_8bit.png',
+    'Salo': 'mika_salo_8bit.png',
+    'Jos Verstappen': 'jos_verstappen_8bit.png',
+    'de la Rosa': 'pedro_de_la_rosa_8bit.png',
+    'Sato': 'takuma_sato_8bit.png',
+    'Kobayashi': 'kamui_kobayashi_8bit.png',
+    'Grosjean': 'romain_grosjean_8bit.png',
+    'Depailler': 'patrick_depailler_8bit.png',
+    'Pironi': 'didier_pironi_8bit.png',
+    'de Angelis': 'elio_de_angelis_8bit.png',
+    'Collins': 'peter_collins_8bit.png',
+    'von Trips': 'wolfgang_von_trips_8bit.png',
+    'Siffert': 'jo_siffert_8bit.png',
+    'Rodriguez': 'pedro_rodriguez_8bit.png',
+    'Rodríguez': 'pedro_rodriguez_8bit.png', // Handle accent
+    'Pedro Rodriguez': 'pedro_rodriguez_8bit.png',
+    'Bandini': 'lorenzo_bandini_8bit.png',
 };
 
-export function getDriverPhoto(surname) {
+export function getDriverPhoto(surname, forename) {
+    // Check for full name match first (e.g. "Jos Verstappen")
+    if (forename) {
+        const fullName = `${forename} ${surname}`;
+        // Try exact full name
+        if (driverPhotoMap[fullName]) {
+            return `/assets/${driverPhotoMap[fullName]}`;
+        }
+        // Try simple concatenation just in case (e.g. "Graham Hill" is in map, but passed as separate)
+    }
+
     const filename = driverPhotoMap[surname];
     if (filename) {
         return `/assets/${filename}`;
@@ -106,7 +137,7 @@ export function getDriverPhoto(surname) {
 }
 
 export function getDriverPhotoOrPlaceholder(forename, surname) {
-    const photo = getDriverPhoto(surname);
+    const photo = getDriverPhoto(surname, forename);
     if (photo) return photo;
     // Fallback to UI Avatars
     return `https://ui-avatars.com/api/?name=${forename}+${surname}&background=E10600&color=fff&size=128`;
