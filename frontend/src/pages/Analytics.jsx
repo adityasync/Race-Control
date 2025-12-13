@@ -12,6 +12,7 @@ import {
     CartesianGrid, Legend, LineChart, Line, ScatterChart, Scatter, ZAxis, Area, AreaChart
 } from 'recharts';
 import Footer from '../components/Footer';
+import SmartLoader from '../components/SmartLoader';
 import { Loader2, TrendingUp, ChevronRight, Trophy, Timer, Zap, Target, Users, Flag, Swords, AlertCircle } from 'lucide-react';
 import HeadToHead from './HeadToHead';
 
@@ -168,14 +169,7 @@ export default function Analytics() {
         }
     };
 
-    if (loading) return (
-        <div className="min-h-screen bg-black flex items-center justify-center">
-            <div className="text-center">
-                <Loader2 className="animate-spin h-12 w-12 text-f1-red mx-auto mb-4" aria-label="Loading analytics" role="status" />
-                <p className="text-gray-500 font-mono text-sm">Loading F1 analytics...</p>
-            </div>
-        </div>
-    );
+    if (loading) return <SmartLoader message="Crunching numbers..." />;
 
     if (error) return (
         <div className="min-h-screen bg-black flex items-center justify-center">

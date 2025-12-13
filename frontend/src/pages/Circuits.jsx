@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { getCircuitsWithStats } from '../services/api';
 import Footer from '../components/Footer';
-import { Loader2, ChevronRight, MapPin } from 'lucide-react';
+import SmartLoader from '../components/SmartLoader';
+import { ChevronRight, MapPin } from 'lucide-react';
 
 export default function Circuits() {
     const [circuits, setCircuits] = useState([]);
@@ -23,11 +24,7 @@ export default function Circuits() {
         fetchCircuits();
     }, []);
 
-    if (loading) return (
-        <div className="min-h-screen bg-black flex items-center justify-center">
-            <Loader2 className="animate-spin h-12 w-12 text-f1-red" aria-label="Loading circuits" role="status" />
-        </div>
-    );
+    if (loading) return <SmartLoader message="Loading circuits..." />;
 
     const byCountry = circuits.reduce((acc, c) => {
         if (!acc[c.country]) acc[c.country] = [];

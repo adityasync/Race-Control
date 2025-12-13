@@ -31,7 +31,7 @@ export default function SmartLoader({ message = "Loading Data..." }) {
                 const currentIndex = F1_FACTS.indexOf(prev);
                 return F1_FACTS[(currentIndex + 1) % F1_FACTS.length];
             });
-        }, 4000);
+        }, 8000);
 
         return () => {
             clearTimeout(delayTimer);

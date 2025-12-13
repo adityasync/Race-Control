@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { getHeadToHead } from '../services/api';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { Users, Trophy, Flag, Timer, AlertCircle } from 'lucide-react';
+import SmartLoader from '../components/SmartLoader';
 
 export default function HeadToHead() {
     const [drivers, setDrivers] = useState([]);
@@ -38,7 +39,7 @@ export default function HeadToHead() {
         }
     };
 
-    if (loading) return <div className="text-gray-500 font-mono">Loading data...</div>;
+    if (loading) return <SmartLoader message="Preparing stats..." />;
 
     if (!driver1 || !driver2) return null;
 

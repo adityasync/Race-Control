@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { getConstructors } from '../services/api';
 import Footer from '../components/Footer';
-import { Trophy, Loader2, ChevronRight } from 'lucide-react';
+import SmartLoader from '../components/SmartLoader';
+import { Trophy, ChevronRight } from 'lucide-react';
 
 export default function Teams() {
     const [teams, setTeams] = useState([]);
@@ -26,14 +27,7 @@ export default function Teams() {
         fetchTeams();
     }, []);
 
-    if (loading) return (
-        <div className="min-h-screen bg-black flex items-center justify-center">
-            <div className="text-center">
-                <Loader2 className="animate-spin h-12 w-12 text-f1-red mx-auto mb-4" />
-                <p className="text-gray-500 font-mono text-sm">Loading constructors...</p>
-            </div>
-        </div>
-    );
+    if (loading) return <SmartLoader message="Loading constructors..." />;
 
     return (
         <div className="min-h-screen bg-black">
