@@ -84,7 +84,7 @@ export default function CircuitDetails() {
             {/* Content */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
                 {/* Recent Winners */}
-                <div className="bg-gray-900 border border-gray-800 p-6">
+                <div className="bg-gray-900 border border-gray-800 p-4 sm:p-6">
                     <h2 className="text-xl font-racing text-white mb-4 flex items-center gap-2">
                         <Calendar className="text-f1-red" /> Recent Races
                     </h2>
@@ -114,7 +114,7 @@ export default function CircuitDetails() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Top Winners */}
-                    <div className="bg-gray-900 border border-gray-800 p-6">
+                    <div className="bg-gray-900 border border-gray-800 p-4 sm:p-6">
                         <h2 className="text-xl font-racing text-white mb-4 flex items-center gap-2">
                             <Trophy className="text-f1-red" /> Most Wins (Drivers)
                         </h2>
@@ -138,7 +138,7 @@ export default function CircuitDetails() {
                     </div>
 
                     {/* Top Constructors */}
-                    <div className="bg-gray-900 border border-gray-800 p-6">
+                    <div className="bg-gray-900 border border-gray-800 p-4 sm:p-6">
                         <h2 className="text-xl font-racing text-white mb-4 flex items-center gap-2">
                             <Flag className="text-f1-red" /> Most Wins (Constructors)
                         </h2>
@@ -163,7 +163,7 @@ export default function CircuitDetails() {
                 </div>
 
                 {/* Fastest Laps */}
-                <div className="bg-gray-900 border border-gray-800 p-6">
+                <div className="bg-gray-900 border border-gray-800 p-4 sm:p-6">
                     <h2 className="text-xl font-racing text-white mb-4 flex items-center gap-2">
                         <Timer className="text-f1-red" /> Fastest Laps (All Time)
                     </h2>

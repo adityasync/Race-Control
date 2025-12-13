@@ -69,7 +69,7 @@ export default function Home() {
             />
 
             {/* ===== HERO SECTION ===== */}
-            <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+            <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
                 {/* Background effects */}
                 <div className="absolute inset-0">
                     <div className="absolute inset-0 opacity-[0.02]" style={{
@@ -189,7 +189,7 @@ export default function Home() {
                 </div>
 
                 <motion.div
-                    className="absolute bottom-12 left-1/2 -translate-x-1/2"
+                    className="relative mt-12 md:absolute md:bottom-12 md:left-1/2 md:-translate-x-1/2 md:mt-0"
                     initial={{ opacity: 0 }}
                     animate={loaded ? { opacity: 1 } : {}}
                     transition={{ delay: 2 }}
@@ -328,12 +328,12 @@ export default function Home() {
             {/* ===== HORIZONTAL SCROLL SHOWCASE ===== */}
             <section ref={horizontalRef} className="relative h-[400vh]">
                 <div className="sticky top-0 h-screen flex items-center overflow-hidden">
-                    <div className="absolute top-8 left-0 right-0 flex justify-between px-8 text-xs font-mono text-gray-700">
-                        <span>START</span>
-                        <span>SECTOR 1</span>
-                        <span>SECTOR 2</span>
-                        <span>SECTOR 3</span>
-                        <span>FINISH</span>
+                    <div className="absolute top-8 left-0 right-0 flex justify-between px-8 text-xs font-mono font-bold tracking-widest z-10">
+                        <SectorLabel progress={horizontalProgress} threshold={0} label="START" />
+                        <SectorLabel progress={horizontalProgress} threshold={0.25} label="SECTOR 1" />
+                        <SectorLabel progress={horizontalProgress} threshold={0.5} label="SECTOR 2" />
+                        <SectorLabel progress={horizontalProgress} threshold={0.75} label="SECTOR 3" />
+                        <SectorLabel progress={horizontalProgress} threshold={0.95} label="FINISH" />
                     </div>
 
                     <div className="absolute top-14 left-8 right-8 h-1 bg-gray-900">
@@ -506,6 +506,30 @@ export default function Home() {
                 </div>
             </footer>
         </div>
+    );
+}
+
+
+
+function SectorLabel({ progress, threshold, label }) {
+    // Transform color from gray to F1 purple (#d946ef) based on threshold
+    const color = useTransform(
+        progress,
+        [threshold, threshold + 0.05],
+        ["#374151", "#d946ef"] // gray-700 to fuchsia-500 (Purple)
+    );
+
+    // Add a slight glow effect when active
+    const textShadow = useTransform(
+        progress,
+        [threshold, threshold + 0.05],
+        ["0px 0px 0px rgba(217, 70, 239, 0)", "0px 0px 10px rgba(217, 70, 239, 0.5)"]
+    );
+
+    return (
+        <motion.span style={{ color, textShadow }}>
+            {label}
+        </motion.span>
     );
 }
 

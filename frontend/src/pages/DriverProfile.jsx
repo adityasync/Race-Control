@@ -1,14 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getDriverCareer, getDriverCircuits } from '../services/api';
-import { Loader2, ChevronRight, Trophy, Flag, Calendar, MapPin, ArrowLeft, TrendingUp } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { getDriverCareer, getDriverCircuits, getDriverEvolution, getDriverFinishingStatus, getDriverTeammateBattles, getDriverCareerTrajectory, getDriverFinishingPositions } from '../services/api';
+import { Loader2, ChevronRight, Trophy, Flag, Calendar, MapPin, ArrowLeft, TrendingUp, Activity } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend, LineChart, Line, AreaChart, Area } from 'recharts';
 import { getDriverPhotoOrPlaceholder } from '../utils/driverPhotos';
 
 export default function DriverProfile() {
     const { id } = useParams();
     const [career, setCareer] = useState(null);
     const [circuits, setCircuits] = useState([]);
+    const [evolution, setEvolution] = useState([]);
+    const [finishingStatus, setFinishingStatus] = useState([]);
+    const [teammates, setTeammates] = useState([]);
+    const [trajectory, setTrajectory] = useState([]);
+    const [positions, setPositions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('overview');
 
@@ -16,12 +21,22 @@ export default function DriverProfile() {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const [careerRes, circuitsRes] = await Promise.all([
+                const [careerRes, circuitsRes, evolutionRes, statusRes, teammatesRes, trajectoryRes, positionsRes] = await Promise.all([
                     getDriverCareer(id),
-                    getDriverCircuits(id)
+                    getDriverCircuits(id),
+                    getDriverEvolution(id),
+                    getDriverFinishingStatus(id),
+                    getDriverTeammateBattles(id),
+                    getDriverCareerTrajectory(id),
+                    getDriverFinishingPositions(id)
                 ]);
                 setCareer(careerRes.data);
                 setCircuits(circuitsRes.data);
+                setEvolution(evolutionRes.data);
+                setFinishingStatus(statusRes.data);
+                setTeammates(teammatesRes.data);
+                setTrajectory(trajectoryRes.data);
+                setPositions(positionsRes.data);
             } catch (err) {
                 console.error('Failed to load driver:', err);
             } finally {
@@ -91,7 +106,7 @@ export default function DriverProfile() {
 
                     {/* Tabs */}
                     <div className="flex gap-2 mt-8 overflow-x-auto">
-                        {['overview', 'seasons', 'circuits', 'teams'].map(tab => (
+                        {['overview', 'seasons', 'analysis', 'circuits', 'teams'].map(tab => (
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
@@ -222,12 +237,19 @@ export default function DriverProfile() {
                         <h2 className="text-xl font-racing text-white mb-4 flex items-center gap-2">
                             <MapPin className="text-f1-red" /> Circuit Performance
                         </h2>
-                        <div style={{ width: '100%', height: 400 }}>
+                        <div className="w-full h-96">
                             <ResponsiveContainer>
-                                <BarChart data={circuits.slice(0, 15)} layout="vertical" margin={{ left: 120 }}>
+                                <BarChart data={circuits.slice(0, 15)} layout="vertical" margin={{ top: 5, right: 30, left: 10, bottom: 5 }}>
                                     <CartesianGrid strokeDasharray="3 3" stroke="#333" />
                                     <XAxis type="number" stroke="#666" />
-                                    <YAxis type="category" dataKey="circuit" stroke="#666" tick={{ fill: '#fff', fontSize: 11 }} />
+                                    <YAxis
+                                        type="category"
+                                        dataKey="circuit"
+                                        stroke="#666"
+                                        tick={{ fill: '#fff', fontSize: 11 }}
+                                        width={100}
+                                        tickFormatter={(value) => value.length > 12 ? `${value.substring(0, 12)}...` : value}
+                                    />
                                     <Tooltip contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #E10600' }} />
                                     <Bar dataKey="wins" fill="#FFD700" name="Wins" stackId="a" />
                                     <Bar dataKey="podiums" fill="#E10600" name="Podiums" stackId="a" />
@@ -291,11 +313,165 @@ export default function DriverProfile() {
                         ))}
                     </div>
                 )}
+                {activeTab === 'analysis' && (
+                    <div className="space-y-8">
+                        {/* Race Craft Analysis */}
+                        <div className="bg-gray-900 border border-gray-800 p-4 sm:p-6">
+                            <h2 className="text-xl font-racing text-white mb-4 flex items-center gap-2">
+                                <TrendingUp className="text-f1-red" /> Race Craft Analysis
+                            </h2>
+                            <p className="text-gray-400 text-sm mb-6">Comparing average qualifying position vs finishing position per season. Lower is better.</p>
+                            <div className="w-full h-64 sm:h-96">
+                                <ResponsiveContainer>
+                                    <BarChart data={evolution} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+                                        <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                                        <XAxis dataKey="year" stroke="#666" />
+                                        <YAxis stroke="#666" list="1" reversed />
+                                        <Tooltip
+                                            contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #E10600' }}
+                                            formatter={(value) => [value, 'Position']}
+                                        />
+                                        <Legend />
+                                        <Bar dataKey="avg_grid" name="Avg Grid" fill="#4dabf7" />
+                                        <Bar dataKey="avg_finish" name="Avg Finish" fill="#ffd43b" />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </div>
+
+                        {/* Finishing Record */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="bg-gray-900 border border-gray-800 p-4 sm:p-6">
+                                <h2 className="text-xl font-racing text-white mb-4 flex items-center gap-2">
+                                    <Trophy className="text-f1-red" /> Finishing Record
+                                </h2>
+                                <div className="w-full h-64 sm:h-80">
+                                    <ResponsiveContainer>
+                                        <PieChart>
+                                            <Pie
+                                                data={finishingStatus}
+                                                dataKey="count"
+                                                nameKey="status_group"
+                                                cx="50%"
+                                                cy="50%"
+                                                outerRadius={80}
+                                                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                                            >
+                                                {finishingStatus.map((entry, index) => (
+                                                    <Cell key={`cell-${index}`} fill={COLORS[entry.status_group] || '#8884d8'} />
+                                                ))}
+                                            </Pie>
+                                            <Tooltip contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #E10600' }} />
+                                            <Legend />
+                                        </PieChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </div>
+
+                            <div className="bg-gray-900 border border-gray-800 p-4 sm:p-6">
+                                <h2 className="text-xl font-racing text-white mb-4 flex items-center gap-2">
+                                    <Activity className="text-f1-red" /> Performance Evolution
+                                </h2>
+                                <div className="w-full h-64 sm:h-80">
+                                    <ResponsiveContainer>
+                                        <LineChart data={evolution}>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                                            <XAxis dataKey="year" stroke="#666" />
+                                            <YAxis yAxisId="left" stroke="#E10600" />
+                                            <YAxis yAxisId="right" orientation="right" stroke="#4dabf7" reversed />
+                                            <Tooltip contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #E10600' }} />
+                                            <Line yAxisId="left" type="monotone" dataKey="total_points" name="Points" stroke="#E10600" strokeWidth={2} dot={false} />
+                                            <Line yAxisId="right" type="monotone" dataKey="positions_gained_count" name="Overtakes (Net)" stroke="#4dabf7" strokeWidth={2} dot={false} />
+                                        </LineChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </div>
+
+                            {/* Teammate Battles */}
+                            <div className="bg-gray-900 border border-gray-800 p-4 sm:p-6">
+                                <h2 className="text-xl font-racing text-white mb-4 flex items-center gap-2">
+                                    <Activity className="text-f1-red" /> Teammate Battles (Race)
+                                </h2>
+                                <p className="text-gray-400 text-sm mb-6">Head-to-head race finishes against teammates.</p>
+                                <div className="w-full h-64 sm:h-80">
+                                    <ResponsiveContainer>
+                                        <BarChart data={teammates} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                                            <XAxis dataKey="year" stroke="#666" />
+                                            <YAxis stroke="#666" />
+                                            <Tooltip
+                                                contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #E10600' }}
+                                            />
+                                            <Legend />
+                                            <Bar dataKey="race_ahead" name="Ahead" fill="#10b981" stackId="a" />
+                                            <Bar dataKey="race_behind" name="Behind" fill="#ef4444" stackId="a" />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </div>
+
+                            {/* Finishing Positions */}
+                            <div className="bg-gray-900 border border-gray-800 p-4 sm:p-6">
+                                <h2 className="text-xl font-racing text-white mb-4 flex items-center gap-2">
+                                    <Flag className="text-f1-red" /> Finishing Positions
+                                </h2>
+                                <p className="text-gray-400 text-sm mb-6">Distribution of race finishing positions.</p>
+                                <div className="w-full h-64 sm:h-80">
+                                    <ResponsiveContainer>
+                                        <BarChart data={positions} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                                            <XAxis dataKey="position" stroke="#666" />
+                                            <YAxis stroke="#666" />
+                                            <Tooltip
+                                                cursor={{ fill: '#333' }}
+                                                contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #E10600' }}
+                                            />
+                                            <Bar dataKey="count" name="Finishes" fill="#E10600" />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </div>
+
+                            {/* Career Trajectory */}
+                            <div className="bg-gray-900 border border-gray-800 p-4 sm:p-6 col-span-1 lg:col-span-2">
+                                <h2 className="text-xl font-racing text-white mb-4 flex items-center gap-2">
+                                    <TrendingUp className="text-f1-red" /> Career Statistics Trajectory
+                                </h2>
+                                <div className="w-full h-64 sm:h-96">
+                                    <ResponsiveContainer>
+                                        <AreaChart data={trajectory} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                                            <defs>
+                                                <linearGradient id="colorPoints" x1="0" y1="0" x2="0" y2="1">
+                                                    <stop offset="5%" stopColor="#E10600" stopOpacity={0.8} />
+                                                    <stop offset="95%" stopColor="#E10600" stopOpacity={0} />
+                                                </linearGradient>
+                                            </defs>
+                                            <XAxis dataKey="year" stroke="#666" />
+                                            <YAxis yAxisId="left" stroke="#E10600" label={{ value: 'Points', angle: -90, position: 'insideLeft' }} />
+                                            <YAxis yAxisId="right" orientation="right" stroke="#4dabf7" label={{ value: 'Races', angle: 90, position: 'insideRight' }} />
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                                            <Tooltip contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #E10600' }} />
+                                            <Legend />
+                                            <Area yAxisId="left" type="monotone" dataKey="cumulative_points" name="Total Points" stroke="#E10600" fillOpacity={1} fill="url(#colorPoints)" />
+                                            <Line yAxisId="right" type="monotone" dataKey="cumulative_races" name="Total Races" stroke="#4dabf7" strokeWidth={2} dot={false} />
+                                        </AreaChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
 }
 
+const COLORS = {
+    'Finished': '#10b981', // green
+    'Accident': '#ef4444', // red
+    'Mechanical': '#f59e0b', // orange
+    'Other': '#6b7280', // gray
+};
 function StatBadge({ value, label, color = 'text-white' }) {
     return (
         <div className="text-center">

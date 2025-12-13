@@ -208,4 +208,113 @@ public class DriversController {
                 """;
         return jdbcTemplate.queryForList(sql, id);
     }
+
+    /**
+     * Driver evolution over years
+     */
+    @GetMapping("/{id}/evolution")
+    public List<Map<String, Object>> getDriverEvolution(@PathVariable int id) {
+        String sql = """
+                SELECT ra.year,
+                       ROUND(CAST(AVG(NULLIF(r.grid, 0)) AS NUMERIC), 0) as avg_grid,
+                       ROUND(CAST(AVG(NULLIF(r.position, 0)) AS NUMERIC), 0) as avg_finish,
+                       SUM(r.points) as total_points,
+                       ROUND(CAST(SUM(r.points) / CAST(COUNT(*) AS NUMERIC) AS NUMERIC), 2) as points_per_race,
+                       SUM(CASE WHEN r.position < r.grid THEN 1 ELSE 0 END) as positions_gained_count
+                FROM results r
+                JOIN races ra ON r.race_id = ra.race_id
+                WHERE r.driver_id = ?
+                GROUP BY ra.year
+                ORDER BY ra.year ASC
+                """;
+        return jdbcTemplate.queryForList(sql, id);
+    }
+
+    /**
+     * Driver finishing status analysis (DNF breakdown)
+     */
+    @GetMapping("/{id}/status")
+    public List<Map<String, Object>> getDriverFinishingStatus(@PathVariable int id) {
+        String sql = """
+                SELECT
+                    CASE
+                        WHEN s.status IN ('Finished', '+1 Lap', '+2 Laps', '+3 Laps', '+4 Laps', '+5 Laps', '+6 Laps', '+7 Laps', '+8 Laps', '+9 Laps') THEN 'Finished'
+                        WHEN s.status LIKE 'Collision%' OR s.status = 'Accident' OR s.status = 'Spun off' THEN 'Accident'
+                        WHEN s.status LIKE 'Engine%' OR s.status LIKE 'Gearbox%' OR s.status LIKE 'Transmission%' OR s.status LIKE 'Hydraulics%' OR s.status LIKE 'Electrical%' THEN 'Mechanical'
+                        ELSE 'Other'
+                    END as status_group,
+                    COUNT(*) as count
+                FROM results r
+                JOIN status s ON r.status_id = s.status_id
+                WHERE r.driver_id = ?
+                GROUP BY status_group
+                ORDER BY count DESC
+                """;
+        return jdbcTemplate.queryForList(sql, id);
+    }
+
+    /**
+     * Teammate battles (Head to Head per season)
+     */
+    @GetMapping("/{id}/teammates")
+    public List<Map<String, Object>> getTeammateBattles(@PathVariable int id) {
+        String sql = """
+                SELECT
+                    ra.year,
+                    count(distinct r1.race_id) as races_with_teammate,
+                    SUM(CASE WHEN r1.position < r2.position THEN 1 ELSE 0 END) as race_ahead,
+                    SUM(CASE WHEN r1.position > r2.position THEN 1 ELSE 0 END) as race_behind,
+                    SUM(CASE WHEN r1.grid < r2.grid THEN 1 ELSE 0 END) as quali_ahead,
+                    SUM(CASE WHEN r1.grid > r2.grid THEN 1 ELSE 0 END) as quali_behind
+                FROM results r1
+                JOIN results r2 ON r1.race_id = r2.race_id AND r1.constructor_id = r2.constructor_id AND r1.driver_id != r2.driver_id
+                JOIN races ra ON r1.race_id = ra.race_id
+                WHERE r1.driver_id = ?
+                  AND r1.position IS NOT NULL AND r2.position IS NOT NULL
+                  AND r1.grid IS NOT NULL AND r2.grid IS NOT NULL
+                GROUP BY ra.year
+                ORDER BY ra.year ASC
+                """;
+        return jdbcTemplate.queryForList(sql, id);
+    }
+
+    /**
+     * Cumulative career trajectory
+     */
+    @GetMapping("/{id}/trajectory")
+    public List<Map<String, Object>> getCareerTrajectory(@PathVariable int id) {
+        String sql = """
+                SELECT
+                    ra.year,
+                    MAX(ra.round) as round,
+                    SUM(r.points) as season_points,
+                    SUM(SUM(r.points)) OVER (ORDER BY ra.year) as cumulative_points,
+                    COUNT(*) as season_races,
+                    SUM(COUNT(*)) OVER (ORDER BY ra.year) as cumulative_races
+                FROM results r
+                JOIN races ra ON r.race_id = ra.race_id
+                WHERE r.driver_id = ?
+                GROUP BY ra.year
+                ORDER BY ra.year ASC
+                """;
+        return jdbcTemplate.queryForList(sql, id);
+    }
+
+    /**
+     * Finishing position distribution (Histogram)
+     */
+    @GetMapping("/{id}/positions")
+    public List<Map<String, Object>> getFinishingPositions(@PathVariable int id) {
+        String sql = """
+                SELECT
+                    r.position,
+                    COUNT(*) as count
+                FROM results r
+                WHERE r.driver_id = ?
+                  AND r.position IS NOT NULL
+                GROUP BY r.position
+                ORDER BY r.position ASC
+                """;
+        return jdbcTemplate.queryForList(sql, id);
+    }
 }

@@ -115,6 +115,11 @@ export const getDriverById = (id) => api.get(`/drivers/${id}`);
 export const getDriverCareer = (id) => api.get(`/drivers/${id}/career`);
 export const getDriverChampionships = (id) => api.get(`/drivers/${id}/championships`);
 export const getDriverCircuits = (id) => api.get(`/drivers/${id}/circuits`);
+export const getDriverEvolution = (id) => api.get(`/drivers/${id}/evolution`);
+export const getDriverFinishingStatus = (id) => api.get(`/drivers/${id}/status`);
+export const getDriverTeammateBattles = (id) => api.get(`/drivers/${id}/teammates`);
+export const getDriverCareerTrajectory = (id) => api.get(`/drivers/${id}/trajectory`);
+export const getDriverFinishingPositions = (id) => api.get(`/drivers/${id}/positions`);
 
 // Circuit endpoints
 export const getCircuits = () => api.get('/circuits');
