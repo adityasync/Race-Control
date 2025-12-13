@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { getRaces } from '../services/api';
 import Footer from '../components/Footer';
+import SmartLoader from '../components/SmartLoader';
 import { Timer, Loader2, Calendar, MapPin, ChevronRight, Flag } from 'lucide-react';
 
 export default function Races() {
@@ -28,6 +29,8 @@ export default function Races() {
         fetchRaces();
     }, [selectedYear]);
 
+    if (loading) return <SmartLoader message={`Loading ${selectedYear} calendar...`} />;
+
     return (
         <div className="min-h-screen bg-black">
             {/* Header */}
@@ -43,7 +46,6 @@ export default function Races() {
                         <ChevronRight className="w-4 h-4" />
                         <span className="text-f1-red">Races</span>
                     </motion.div>
-
                     {/* Title and Season Selector */}
                     <motion.div
                         className="flex flex-col md:flex-row md:items-center justify-between gap-6"
@@ -85,75 +87,69 @@ export default function Races() {
                     <div className="bg-red-900/30 border border-f1-red text-white p-4 rounded mb-8 font-mono text-sm">
                         ⚠ {error}
                     </div>
+
                 )}
 
-                {loading ? (
-                    <div className="flex flex-col items-center justify-center py-20">
-                        <Loader2 className="animate-spin h-12 w-12 text-f1-red mb-4" />
-                        <p className="text-gray-500 font-mono text-sm">Loading {selectedYear} calendar...</p>
-                    </div>
-                ) : (
-                    <div className="space-y-3">
-                        {races.map((race, index) => (
-                            <motion.div
-                                key={race.raceId}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: index * 0.03 }}
-                                className="group bg-gray-900 border border-gray-800 hover:border-f1-red p-4 transition-all flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between"
-                            >
-                                <div className="flex items-center gap-5 w-full md:w-auto">
-                                    {/* Round number with racing badge */}
-                                    <div className="w-16 h-16 bg-f1-red flex flex-col items-center justify-center flex-shrink-0">
-                                        <span className="text-xs text-white/70 font-mono">R</span>
-                                        <span className="text-2xl font-racing text-white leading-none">{String(race.round).padStart(2, '0')}</span>
-                                    </div>
-
-                                    <div>
-                                        <h3 className="text-xl font-racing text-white group-hover:text-f1-red transition-colors">
-                                            {race.name}
-                                        </h3>
-                                        <div className="flex items-center gap-4 text-sm text-gray-500 mt-1">
-                                            <span className="flex items-center gap-1">
-                                                <Calendar size={14} className="text-gray-600" />
-                                                {race.date}
-                                            </span>
-                                            <span className="flex items-center gap-1">
-                                                <MapPin size={14} className="text-gray-600" />
-                                                Circuit #{race.circuitId}
-                                            </span>
-                                        </div>
-                                    </div>
+                <div className="space-y-3">
+                    {races.map((race, index) => (
+                        <motion.div
+                            key={race.raceId}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: index * 0.03 }}
+                            className="group bg-gray-900 border border-gray-800 hover:border-f1-red p-4 transition-all flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between"
+                        >
+                            <div className="flex items-center gap-5 w-full md:w-auto">
+                                {/* Round number with racing badge */}
+                                <div className="w-16 h-16 bg-f1-red flex flex-col items-center justify-center flex-shrink-0">
+                                    <span className="text-xs text-white/70 font-mono">R</span>
+                                    <span className="text-2xl font-racing text-white leading-none">{String(race.round).padStart(2, '0')}</span>
                                 </div>
 
-                                <div className="mt-4 md:mt-0 flex items-center gap-3">
-                                    {/* Position indicator line */}
-                                    <div className="hidden md:flex items-center gap-1">
-                                        <div className="h-px w-8 bg-gray-700"></div>
-                                        <Flag className="w-4 h-4 text-gray-600" />
+                                <div>
+                                    <h3 className="text-xl font-racing text-white group-hover:text-f1-red transition-colors">
+                                        {race.name}
+                                    </h3>
+                                    <div className="flex items-center gap-4 text-sm text-gray-500 mt-1">
+                                        <span className="flex items-center gap-1">
+                                            <Calendar size={14} className="text-gray-600" />
+                                            {race.date}
+                                        </span>
+                                        <span className="flex items-center gap-1">
+                                            <MapPin size={14} className="text-gray-600" />
+                                            Circuit #{race.circuitId}
+                                        </span>
                                     </div>
-
-                                    <a
-                                        href={race.url}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className="px-4 py-2 bg-black border border-gray-700 text-xs font-mono text-gray-400 hover:bg-f1-red hover:border-f1-red hover:text-white transition-all flex items-center gap-2"
-                                    >
-                                        FULL REPORT
-                                        <ChevronRight className="w-3 h-3" />
-                                    </a>
                                 </div>
-                            </motion.div>
-                        ))}
-
-                        {races.length === 0 && (
-                            <div className="text-center py-20">
-                                <Flag className="w-12 h-12 text-gray-700 mx-auto mb-4" />
-                                <p className="text-gray-500 font-mono">No race data found for {selectedYear}</p>
                             </div>
-                        )}
-                    </div>
-                )}
+
+                            <div className="mt-4 md:mt-0 flex items-center gap-3">
+                                {/* Position indicator line */}
+                                <div className="hidden md:flex items-center gap-1">
+                                    <div className="h-px w-8 bg-gray-700"></div>
+                                    <Flag className="w-4 h-4 text-gray-600" />
+                                </div>
+
+                                <a
+                                    href={race.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="px-4 py-2 bg-black border border-gray-700 text-xs font-mono text-gray-400 hover:bg-f1-red hover:border-f1-red hover:text-white transition-all flex items-center gap-2"
+                                >
+                                    FULL REPORT
+                                    <ChevronRight className="w-3 h-3" />
+                                </a>
+                            </div>
+                        </motion.div>
+                    ))}
+
+                    {races.length === 0 && (
+                        <div className="text-center py-20">
+                            <Flag className="w-12 h-12 text-gray-700 mx-auto mb-4" />
+                            <p className="text-gray-500 font-mono">No race data found for {selectedYear}</p>
+                        </div>
+                    )}
+                </div>
 
                 {/* Footer info */}
                 <div className="mt-12 flex items-center justify-center gap-4">
