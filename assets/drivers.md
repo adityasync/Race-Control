@@ -62,30 +62,30 @@ Style: **Face only (no helmet)**, Trading Card, 8-bit.
 | **John Watson** | 5 | [x] | `assets/john_watson_8bit.png` |
 | **Dan Gurney** | 4 | [x] | `assets/dan_gurney_8bit.png` |
 | **Eddie Irvine** | 4 | [x] | `assets/eddie_irvine_8bit.png` |
-| **Bruce McLaren** | 4 | [ ] |  |
+| **Bruce McLaren** | 4 | [x] | `assets/bruce_mclaren_8bit.png` |
 | **Lando Norris** | 4 | [x] | `assets/lando_norris_8bit.png` |
 | **Carlos Sainz** | 4 | [x] | `assets/carlos_sainz_8bit.png` |
-| **Thierry Boutsen** | 3 | [ ] |  |
-| **Peter Collins** | 3 | [ ] |  |
-| **Giancarlo Fisichella** | 3 | [ ] |  |
-| **Heinz-Harald Frentzen** | 3 | [ ] |  |
-| **Mike Hawthorn** | 3 | [ ] |  |
-| **Johnny Herbert** | 3 | [ ] |  |
-| **Phil Hill** | 3 | [ ] |  |
-| **Didier Pironi** | 3 | [ ] |  |
+| **Thierry Boutsen** | 3 | [x] | `assets/thierry_boutsen_8bit.png` |
+| **Peter Collins** | 3 | [x] | `assets/peter_collins_8bit.png` |
+| **Giancarlo Fisichella** | 3 | [x] | `assets/giancarlo_fisichella_8bit.png` |
+| **Heinz-Harald Frentzen** | 3 | [x] | `assets/heinz_harald_frentzen_8bit.png` |
+| **Mike Hawthorn** | 3 | [x] | `assets/mike_hawthorn_8bit.png` |
+| **Johnny Herbert** | 3 | [x] | `assets/johnny_herbert_8bit.png` |
+| **Phil Hill** | 3 | [x] | `assets/phil_hill_8bit.png` |
+| **Didier Pironi** | 3 | [x] | `assets/didier_pironi_8bit.png` |
 | **George Russell** | 3 | [x] | `assets/george_russell_8bit.png` |
-| **Elio de Angelis** | 2 | [ ] |  |
-| **Patrick Depailler** | 2 | [ ] |  |
-| **José Froilán González** | 2 | [ ] |  |
-| **Jean-Pierre Jabouille** | 2 | [ ] |  |
-| **Oscar Piastri** | 2 | [ ] |  |
-| **Peter Revson** | 2 | [ ] |  |
-| **Pedro Rodríguez** | 2 | [ ] |  |
-| **Jo Siffert** | 2 | [ ] |  |
-| **Patrick Tambay** | 2 | [ ] |  |
-| **Maurice Trintignant** | 2 | [ ] |  |
-| **Wolfgang von Trips** | 2 | [ ] |  |
-| **Bill Vukovich** | 2 | [ ] |  |
+| **Elio de Angelis** | 2 | [x] | `assets/elio_de_angelis_8bit.png` |
+| **Patrick Depailler** | 2 | [x] | `assets/patrick_depailler_8bit.png` |
+| **José Froilán González** | 2 | [x] | `assets/jose_froilan_gonzalez_8bit.png` |
+| **Jean-Pierre Jabouille** | 2 | [x] | `assets/jean_pierre_jabouille_8bit.png` |
+| **Oscar Piastri** | 2 | [x] | `assets/oscar_piastri_8bit.png` |
+| **Peter Revson** | 2 | [x] | `assets/peter_revson_8bit.png` |
+| **Pedro Rodríguez** | 2 | [x] | `assets/pedro_rodriguez_8bit.png` |
+| **Jo Siffert** | 2 | [x] | `assets/jo_siffert_8bit.png` |
+| **Patrick Tambay** | 2 | [x] | `assets/patrick_tambay_8bit.png` |
+| **Maurice Trintignant** | 2 | [x] | `assets/maurice_trintignant_8bit.png` |
+| **Wolfgang von Trips** | 2 | [x] | `assets/wolfgang_von_trips_8bit.png` |
+| **Bill Vukovich** | 2 | [x] | `assets/bill_vukovich_8bit.png` |
 | **Jean Alesi** | 1 | [ ] |  |
 | **Giancarlo Baghetti** | 1 | [ ] |  |
 | **Lorenzo Bandini** | 1 | [ ] |  |
