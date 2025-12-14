@@ -116,6 +116,15 @@ const driverPhotoMap = {
     'Rodríguez': 'pedro_rodriguez_8bit.png', // Handle accent
     'Pedro Rodriguez': 'pedro_rodriguez_8bit.png',
     'Bandini': 'lorenzo_bandini_8bit.png',
+    // Recent Batch Additions
+    'Boutsen': 'thierry_boutsen_8bit.png',
+    'González': 'jose_froilan_gonzalez_8bit.png',
+    'Gonzalez': 'jose_froilan_gonzalez_8bit.png',
+    'Jabouille': 'jean_pierre_jabouille_8bit.png',
+    'Revson': 'peter_revson_8bit.png',
+    'Tambay': 'patrick_tambay_8bit.png',
+    'Trintignant': 'maurice_trintignant_8bit.png',
+    'Vukovich': 'bill_vukovich_8bit.png',
 };
 
 export function getDriverPhoto(surname, forename) {
