@@ -204,7 +204,7 @@ export default function Home() {
                 </div>
 
                 <motion.div
-                    className="relative mt-12 md:absolute md:bottom-12 md:left-1/2 md:-translate-x-1/2 md:mt-0"
+                    className="relative mt-24 md:mt-32"
                     initial={{ opacity: 0 }}
                     animate={loaded ? { opacity: 1 } : {}}
                     transition={{ delay: 2 }}
