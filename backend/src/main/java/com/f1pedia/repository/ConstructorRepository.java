@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ConstructorRepository extends JpaRepository<Constructor, Integer> {
+    java.util.List<Constructor> findByNameContainingIgnoreCase(String name);
 }

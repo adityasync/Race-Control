@@ -38,9 +38,6 @@ public class RaceController {
      */
     @GetMapping("/latest-season")
     public Integer getLatestSeason() {
-        return raceRepository.findAll().stream()
-                .map(Race::getYear)
-                .max(Integer::compareTo)
-                .orElse(java.time.Year.now().getValue());
+        return raceRepository.findMaxYear();
     }
 }

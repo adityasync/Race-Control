@@ -8,4 +8,7 @@ import java.util.List;
 @Repository
 public interface RaceRepository extends JpaRepository<Race, Integer> {
     List<Race> findByYear(Integer year);
+
+    @org.springframework.data.jpa.repository.Query("SELECT MAX(r.year) FROM Race r")
+    Integer findMaxYear();
 }

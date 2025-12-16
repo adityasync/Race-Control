@@ -16,7 +16,10 @@ public class ConstructorController {
     private ConstructorRepository constructorRepository;
 
     @GetMapping
-    public List<Constructor> getAllConstructors() {
+    public List<Constructor> getAllConstructors(@RequestParam(required = false) String search) {
+        if (search != null && !search.trim().isEmpty()) {
+            return constructorRepository.findByNameContainingIgnoreCase(search);
+        }
         return constructorRepository.findAll();
     }
 
@@ -40,8 +43,17 @@ public class ConstructorController {
 
     @GetMapping("/{id}/driver-stats")
     public List<java.util.Map<String, Object>> getDriverStatsByConstructor(@PathVariable Integer id) {
-        List<com.f1pedia.domain.Driver> drivers = driverRepository.findDriversByConstructorId(id);
-        return drivers.stream().map(driver -> {
+        List<Object[]> results = resultRepository.findDriverStatsByConstructorId(id);
+
+        return results.stream().map(row -> {
+            com.f1pedia.domain.Driver driver = (com.f1pedia.domain.Driver) row[0];
+            long wins = ((Number) row[1]).longValue();
+            double totalPoints = ((Number) row[2]).doubleValue();
+            long races = ((Number) row[3]).longValue();
+            int firstYear = ((Number) row[4]).intValue();
+            int lastYear = ((Number) row[5]).intValue();
+            long podiums = ((Number) row[6]).longValue();
+
             java.util.Map<String, Object> stats = new java.util.HashMap<>();
             stats.put("driverId", driver.getDriverId());
             stats.put("forename", driver.getForename());
@@ -49,48 +61,13 @@ public class ConstructorController {
             stats.put("code", driver.getCode());
             stats.put("number", driver.getNumber());
             stats.put("nationality", driver.getNationality());
-
-            // Get results for this driver with this constructor
-            List<com.f1pedia.domain.Result> results = resultRepository.findByDriverDriverId(driver.getDriverId());
-            List<com.f1pedia.domain.Result> teamResults = results.stream()
-                    .filter(r -> r.getConstructor() != null && r.getConstructor().getConstructorId().equals(id))
-                    .toList();
-
-            // Calculate total points
-            double totalPoints = teamResults.stream()
-                    .filter(r -> r.getPoints() != null)
-                    .mapToDouble(com.f1pedia.domain.Result::getPoints)
-                    .sum();
             stats.put("totalPoints", totalPoints);
-
-            // Calculate wins
-            long wins = teamResults.stream()
-                    .filter(r -> r.getPosition() != null && r.getPosition() == 1)
-                    .count();
             stats.put("wins", wins);
-
-            // Calculate podiums
-            long podiums = teamResults.stream()
-                    .filter(r -> r.getPosition() != null && r.getPosition() <= 3)
-                    .count();
             stats.put("podiums", podiums);
-
-            // Calculate active years
-            java.util.Set<Integer> years = teamResults.stream()
-                    .filter(r -> r.getRace() != null)
-                    .map(r -> r.getRace().getYear())
-                    .collect(java.util.stream.Collectors.toSet());
-            if (!years.isEmpty()) {
-                int minYear = years.stream().min(Integer::compareTo).orElse(0);
-                int maxYear = years.stream().max(Integer::compareTo).orElse(0);
-                stats.put("firstYear", minYear);
-                stats.put("lastYear", maxYear);
-                stats.put("yearsActive", minYear == maxYear ? String.valueOf(minYear) : minYear + "-" + maxYear);
-            } else {
-                stats.put("yearsActive", "N/A");
-            }
-
-            stats.put("races", teamResults.size());
+            stats.put("races", races);
+            stats.put("firstYear", firstYear);
+            stats.put("lastYear", lastYear);
+            stats.put("yearsActive", firstYear == lastYear ? String.valueOf(firstYear) : firstYear + "-" + lastYear);
 
             return stats;
         }).sorted((a, b) -> Double.compare((Double) b.get("totalPoints"), (Double) a.get("totalPoints")))
@@ -99,156 +76,94 @@ public class ConstructorController {
 
     @GetMapping("/{id}/seasons")
     public List<java.util.Map<String, Object>> getConstructorSeasons(@PathVariable Integer id) {
-        List<com.f1pedia.domain.Result> results = resultRepository.findByConstructorConstructorId(id);
+        List<Object[]> results = resultRepository.findConstructorSeasonStats(id);
+        List<Object[]> driverPointsRaw = resultRepository.findSeasonDriverPoints(id);
 
-        // Group by Year
-        java.util.Map<Integer, List<com.f1pedia.domain.Result>> byYear = results.stream()
-                .filter(r -> r.getRace() != null)
-                .collect(java.util.stream.Collectors.groupingBy(r -> r.getRace().getYear()));
+        // Map driver points by year
+        java.util.Map<Integer, java.util.Map<String, Double>> driverPointsByYear = new java.util.HashMap<>();
+        for (Object[] row : driverPointsRaw) {
+            int year = ((Number) row[0]).intValue();
+            String driver = (String) row[1];
+            double points = ((Number) row[2]).doubleValue();
 
-        return byYear.entrySet().stream()
-                .map(entry -> {
-                    int year = entry.getKey();
-                    List<com.f1pedia.domain.Result> yearResults = entry.getValue();
+            driverPointsByYear.computeIfAbsent(year, k -> new java.util.HashMap<>()).put(driver, points);
+        }
 
-                    java.util.Map<String, Object> stats = new java.util.HashMap<>();
-                    stats.put("year", year);
-                    stats.put("races", yearResults.stream().map(r -> r.getRace().getRaceId()).distinct().count());
+        return results.stream().map(row -> {
+            int year = ((Number) row[0]).intValue();
+            double points = ((Number) row[1]).doubleValue();
+            long wins = ((Number) row[2]).longValue();
+            long podiums = ((Number) row[3]).longValue();
+            long races = ((Number) row[4]).longValue();
+            int bestFinish = row[5] != null ? ((Number) row[5]).intValue() : 0;
+            double avgGrid = row[6] != null ? ((Number) row[6]).doubleValue() : 0.0;
+            long dnfs = ((Number) row[7]).longValue();
 
-                    double points = yearResults.stream()
-                            .filter(r -> r.getPoints() != null)
-                            .mapToDouble(com.f1pedia.domain.Result::getPoints)
-                            .sum();
-                    stats.put("points", points);
+            java.util.Map<String, Object> stats = new java.util.HashMap<>();
+            stats.put("year", year);
+            stats.put("points", points);
+            stats.put("wins", wins);
+            stats.put("podiums", podiums);
+            stats.put("races", races);
+            stats.put("bestFinish", bestFinish == 0 ? "N/A" : bestFinish);
+            stats.put("avgGrid", Math.round(avgGrid * 10.0) / 10.0);
+            stats.put("dnfs", dnfs);
 
-                    long wins = yearResults.stream()
-                            .filter(r -> r.getPosition() != null && r.getPosition() == 1)
-                            .count();
-                    stats.put("wins", wins);
+            // Add driver points for stacked bar chart
+            stats.put("driverPoints", driverPointsByYear.getOrDefault(year, new java.util.HashMap<>()));
 
-                    long podiums = yearResults.stream()
-                            .filter(r -> r.getPosition() != null && r.getPosition() <= 3)
-                            .count();
-                    stats.put("podiums", podiums);
-
-                    // Best Finish
-                    int bestFinish = yearResults.stream()
-                            .filter(r -> r.getPosition() != null)
-                            .mapToInt(com.f1pedia.domain.Result::getPosition)
-                            .min()
-                            .orElse(0);
-                    stats.put("bestFinish", bestFinish == 0 ? "N/A" : bestFinish);
-
-                    // Avg Grid
-                    double avgGrid = yearResults.stream()
-                            .filter(r -> r.getGrid() != null && r.getGrid() > 0)
-                            .mapToInt(com.f1pedia.domain.Result::getGrid)
-                            .average()
-                            .orElse(0.0);
-                    stats.put("avgGrid", Math.round(avgGrid * 10.0) / 10.0);
-
-                    // DNFs (Checking if position is null or positionText is 'R')
-                    long dnfs = yearResults.stream()
-                            .filter(r -> r.getPosition() == null)
-                            .count();
-                    stats.put("dnfs", dnfs);
-
-                    // Driver Points Breakdown
-                    java.util.Map<String, Double> driverPoints = yearResults.stream()
-                            .filter(r -> r.getPoints() != null && r.getPoints() > 0)
-                            .collect(java.util.stream.Collectors.groupingBy(
-                                    r -> r.getDriver().getSurname(),
-                                    java.util.stream.Collectors.summingDouble(com.f1pedia.domain.Result::getPoints)));
-                    stats.put("driverPoints", driverPoints);
-
-                    return stats;
-                })
-                .sorted((a, b) -> Integer.compare((Integer) b.get("year"), (Integer) a.get("year"))) // Descending year
-                .toList();
+            return stats;
+        }).collect(java.util.stream.Collectors.toList());
     }
 
     @GetMapping("/{id}/circuits")
     public List<java.util.Map<String, Object>> getConstructorCircuits(@PathVariable Integer id) {
-        List<com.f1pedia.domain.Result> results = resultRepository.findByConstructorConstructorId(id);
+        List<Object[]> results = resultRepository.findConstructorCircuitStats(id);
 
-        // Group by Circuit Name (using Race -> Circuit)
-        // Note: Result -> Race -> Circuit access required.
-        // Assuming Race entity has Circuit information or we can group by Race Name if
-        // Circuit entity isn't directly fetchable easily without LazyLoad issues.
-        // Let's assume Race has a getCircuit() or getName(). Better to check Race
-        // entity
-        // first?
-        // Proceeding assuming Race has a getCircuit() or getName() that is stable.
-        // Actually, let's group by Race Name for now as a proxy for Circuit if needed,
-        // or check Race definition.
+        return results.stream().map(row -> {
+            Integer circuitId = (Integer) row[0];
+            String name = (String) row[1];
+            String location = (String) row[2];
+            String country = (String) row[3];
+            long count = ((Number) row[4]).longValue();
+            double points = ((Number) row[5]).doubleValue();
+            long wins = ((Number) row[6]).longValue();
+            long podiums = ((Number) row[7]).longValue();
+            int firstYear = columnToInt(row[8]);
+            int lastYear = columnToInt(row[9]);
 
-        java.util.Map<String, List<com.f1pedia.domain.Result>> byCircuit = results.stream()
-                .filter(r -> r.getRace() != null && r.getRace().getName() != null)
-                .collect(java.util.stream.Collectors.groupingBy(r -> r.getRace().getName())); // Using Race Name as
-                                                                                              // Circuit Proxy
+            int bestFinish = row[10] != null ? ((Number) row[10]).intValue() : 0;
+            double avgGrid = row[11] != null ? ((Number) row[11]).doubleValue() : 0.0;
+            double avgFinish = row[12] != null ? ((Number) row[12]).doubleValue() : 0.0;
+            long dnfs = ((Number) row[13]).longValue();
 
-        return byCircuit.entrySet().stream()
-                .map(entry -> {
-                    String circuitName = entry.getKey();
-                    List<com.f1pedia.domain.Result> circuitResults = entry.getValue();
+            java.util.Map<String, Object> stats = new java.util.HashMap<>();
+            stats.put("circuitId", circuitId);
+            stats.put("circuit", name); // Frontend expects 'circuit', not 'name'
+            stats.put("name", name);
+            stats.put("location", location);
+            stats.put("country", country);
+            stats.put("races", count);
+            stats.put("points", points);
+            stats.put("wins", wins);
+            stats.put("podiums", podiums);
+            stats.put("firstYear", firstYear);
+            stats.put("lastYear", lastYear);
 
-                    java.util.Map<String, Object> stats = new java.util.HashMap<>();
-                    stats.put("circuit", circuitName);
-                    stats.put("races", circuitResults.stream().map(r -> r.getRace().getRaceId()).distinct().count());
+            stats.put("bestFinish", bestFinish == 0 ? "N/A" : bestFinish);
+            stats.put("avgGrid", Math.round(avgGrid * 10.0) / 10.0);
+            stats.put("avgFinish", Math.round(avgFinish * 10.0) / 10.0);
+            stats.put("totalPoints", points); // Frontend uses 'totalPoints' in some charts
+            stats.put("dnfs", dnfs);
 
-                    long wins = circuitResults.stream()
-                            .filter(r -> r.getPosition() != null && r.getPosition() == 1)
-                            .count();
-                    stats.put("wins", wins);
+            return stats;
+        }).collect(java.util.stream.Collectors.toList());
+    }
 
-                    long podiums = circuitResults.stream()
-                            .filter(r -> r.getPosition() != null && r.getPosition() <= 3)
-                            .count();
-                    stats.put("podiums", podiums);
-
-                    double totalPoints = circuitResults.stream()
-                            .filter(r -> r.getPoints() != null)
-                            .mapToDouble(com.f1pedia.domain.Result::getPoints)
-                            .sum();
-                    stats.put("totalPoints", totalPoints);
-
-                    // Calculate average finish (roughly)
-                    double avgFinish = circuitResults.stream()
-                            .filter(r -> r.getPosition() != null)
-                            .mapToInt(com.f1pedia.domain.Result::getPosition)
-                            .average()
-                            .orElse(0.0);
-                    stats.put("avgFinish", Math.round(avgFinish * 10.0) / 10.0);
-
-                    // Best Result
-                    int bestFinish = circuitResults.stream()
-                            .filter(r -> r.getPosition() != null)
-                            .mapToInt(com.f1pedia.domain.Result::getPosition)
-                            .min()
-                            .orElse(0);
-                    stats.put("bestFinish", bestFinish == 0 ? "N/A" : bestFinish);
-
-                    // Avg Grid
-                    double avgGrid = circuitResults.stream()
-                            .filter(r -> r.getGrid() != null && r.getGrid() > 0)
-                            .mapToInt(com.f1pedia.domain.Result::getGrid)
-                            .average()
-                            .orElse(0.0);
-                    stats.put("avgGrid", Math.round(avgGrid * 10.0) / 10.0);
-
-                    // DNFs
-                    long dnfs = circuitResults.stream()
-                            .filter(r -> r.getPosition() == null)
-                            .count();
-                    stats.put("dnfs", dnfs);
-
-                    return stats;
-                })
-                .sorted((a, b) -> Double.compare((Double) b.get("totalPoints"), (Double) a.get("totalPoints"))) // Sorted
-                                                                                                                // by
-                                                                                                                // most
-                                                                                                                // points
-                .toList();
+    private int columnToInt(Object col) {
+        if (col == null)
+            return 0;
+        return ((Number) col).intValue();
     }
 
     @GetMapping("/{id}/dashboard-stats")
@@ -338,7 +253,8 @@ public class ConstructorController {
         List<com.f1pedia.domain.Result> results = resultRepository.findByConstructorConstructorId(id);
 
         // Group by Year and Round -> Sum Points
-        java.util.Map<String, Double> pointsMap = results.stream()
+        // Removed unused pointsMap variable - Fixed Lint Warning
+        results.stream()
                 .filter(r -> r.getRace() != null)
                 .collect(java.util.stream.Collectors.groupingBy(
                         r -> r.getRace().getYear() + "-" + r.getRace().getRound(), // Key: "2008-1"

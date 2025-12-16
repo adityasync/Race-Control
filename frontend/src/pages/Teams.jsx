@@ -69,6 +69,34 @@ export default function Teams() {
 
             {/* Content */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                {/* Search Bar */}
+                <div className="mb-8 relative max-w-md mx-auto md:mx-0">
+                    <input
+                        type="text"
+                        placeholder="Search teams..."
+                        className="w-full bg-gray-900 border border-gray-800 text-white px-4 py-3 pl-10 rounded focus:outline-none focus:border-f1-red transition-colors font-mono"
+                        onChange={(e) => {
+                            const query = e.target.value;
+                            // Simple debounce/direct fetch
+                            setLoading(true);
+                            getConstructors(query)
+                                .then(res => {
+                                    setTeams(res.data);
+                                    setLoading(false);
+                                })
+                                .catch(err => {
+                                    setError('Failed to search teams.');
+                                    setLoading(false);
+                                });
+                        }}
+                    />
+                    <div className="absolute left-3 top-3.5 text-gray-500">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                </div>
+
                 {error && (
                     <div className="bg-red-900/30 border border-f1-red text-white p-4 rounded mb-8 font-mono text-sm">
                         ⚠ {error}

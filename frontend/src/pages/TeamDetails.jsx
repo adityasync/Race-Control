@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import { getConstructorById, getConstructorDriverStats, getConstructorSeasons, getConstructorCircuits, getConstructorDashboardStats, getConstructorStatusBreakdown, getConstructorPointsHeatmap, getConstructorGeoPerformance } from '../services/api';
 import { Trophy, Loader2, ArrowLeft, Globe, Flag, Calendar } from 'lucide-react';
 import { getDriverPhotoOrPlaceholder } from '../utils/driverPhotos';
@@ -9,7 +9,10 @@ import TeamCircuits from '../components/teams/TeamCircuits';
 import TeamOverview from '../components/teams/TeamOverview';
 
 export default function TeamDetails() {
-    const { id } = useParams();
+    const { id, "*": tabParam } = useParams();
+    const navigate = useNavigate();
+    const location = useLocation();
+
     const [team, setTeam] = useState(null);
     const [driverStats, setDriverStats] = useState([]);
     const [seasons, setSeasons] = useState([]);
@@ -21,7 +24,15 @@ export default function TeamDetails() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const [activeTab, setActiveTab] = useState('overview');
+    // Sync state with URL param or default to 'overview'
+    const activeTab = tabParam || 'overview';
+
+    const handleTabChange = (tab) => {
+        // Navigate to the new tab URL
+        // If tab is 'overview', we can either go to /teams/:id or /teams/:id/overview
+        // Let's stick to explicit paths for cleaner refreshing
+        navigate(`/teams/${id}/${tab}`);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -122,7 +133,7 @@ export default function TeamDetails() {
                         {['overview', 'seasons', 'circuits', 'analytics', 'drivers'].map(tab => (
                             <button
                                 key={tab}
-                                onClick={() => setActiveTab(tab)}
+                                onClick={() => handleTabChange(tab)}
                                 className={`px-6 py-2 font-racing uppercase text-sm tracking-wider transition-colors ${activeTab === tab
                                     ? 'bg-f1-red text-white'
                                     : 'bg-black/40 text-f1-warmgray hover:text-white hover:bg-black/60'
