@@ -1,26 +1,50 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getConstructorById, getConstructorDriverStats } from '../services/api';
+import { getConstructorById, getConstructorDriverStats, getConstructorSeasons, getConstructorCircuits, getConstructorDashboardStats, getConstructorStatusBreakdown, getConstructorPointsHeatmap, getConstructorGeoPerformance } from '../services/api';
 import { Trophy, Loader2, ArrowLeft, Globe, Flag, Calendar } from 'lucide-react';
 import { getDriverPhotoOrPlaceholder } from '../utils/driverPhotos';
+import TeamAnalytics from '../components/teams/TeamAnalytics';
+import TeamSeasons from '../components/teams/TeamSeasons';
+import TeamCircuits from '../components/teams/TeamCircuits';
+import TeamOverview from '../components/teams/TeamOverview';
 
 export default function TeamDetails() {
     const { id } = useParams();
     const [team, setTeam] = useState(null);
     const [driverStats, setDriverStats] = useState([]);
+    const [seasons, setSeasons] = useState([]);
+    const [circuits, setCircuits] = useState([]);
+    const [dashboardStats, setDashboardStats] = useState(null);
+    const [statusStats, setStatusStats] = useState([]);
+    const [geoStats, setGeoStats] = useState([]);
+    const [heatmapStats, setHeatmapStats] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const [activeTab, setActiveTab] = useState('overview');
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const [teamRes, statsRes] = await Promise.all([
+                const [teamRes, statsRes, seasonsRes, circuitsRes, dashboardRes, statusRes, geoRes, heatmapRes] = await Promise.all([
                     getConstructorById(id),
-                    getConstructorDriverStats(id)
+                    getConstructorDriverStats(id),
+                    getConstructorSeasons(id),
+                    getConstructorCircuits(id),
+                    getConstructorDashboardStats(id),
+                    getConstructorStatusBreakdown(id),
+                    getConstructorGeoPerformance(id),
+                    getConstructorPointsHeatmap(id)
                 ]);
                 setTeam(teamRes.data);
                 setDriverStats(statsRes.data);
+                setSeasons(seasonsRes.data);
+                setCircuits(circuitsRes.data);
+                setDashboardStats(dashboardRes.data);
+                setStatusStats(statusRes.data);
+                setGeoStats(geoRes.data);
+                setHeatmapStats(heatmapRes.data);
             } catch (err) {
                 setError('Failed to load team details.');
                 console.error(err);
@@ -92,22 +116,80 @@ export default function TeamDetails() {
                             </div>
                         </div>
                     </div>
+
+                    {/* Tabs */}
+                    <div className="flex gap-2 mt-12 overflow-x-auto">
+                        {['overview', 'seasons', 'circuits', 'analytics', 'drivers'].map(tab => (
+                            <button
+                                key={tab}
+                                onClick={() => setActiveTab(tab)}
+                                className={`px-6 py-2 font-racing uppercase text-sm tracking-wider transition-colors ${activeTab === tab
+                                    ? 'bg-f1-red text-white'
+                                    : 'bg-black/40 text-f1-warmgray hover:text-white hover:bg-black/60'
+                                    }`}
+                            >
+                                {tab}
+                            </button>
+                        ))}
+                    </div>
                 </div>
                 <Trophy className="absolute -bottom-12 -right-12 text-black/20 h-96 w-96 transform rotate-12" />
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <h2 className="text-3xl font-racing text-f1-offwhite mb-4 border-l-4 border-f1-red pl-4">Team Drivers (All Time)</h2>
-                <p className="text-f1-warmgray mb-8 font-mono text-sm">Click on a driver to see detailed stats with this team</p>
+                {/* Overview Tab */}
+                {activeTab === 'overview' && (
+                    <TeamOverview
+                        team={team}
+                        driverStats={driverStats}
+                        seasons={seasons}
+                        dashboardStats={dashboardStats}
+                        statusStats={statusStats}
+                        geoStats={geoStats}
+                        heatmapStats={heatmapStats}
+                        setActiveTab={setActiveTab}
+                    />
+                )}
 
-                {driverStats.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {driverStats.map(driver => (
-                            <TeamDriverCard key={driver.driverId} driver={driver} />
-                        ))}
+                {/* Seasons Tab */}
+                {activeTab === 'seasons' && (
+                    <div className="fade-in">
+                        <TeamSeasons seasons={seasons} />
                     </div>
-                ) : (
-                    <div className="text-f1-warmgray italic">No driver records found for this team.</div>
+                )}
+
+                {/* Circuits Tab */}
+                {activeTab === 'circuits' && (
+                    <div className="fade-in">
+                        <TeamCircuits circuits={circuits} />
+                    </div>
+                )}
+
+                {/* Analytics Tab */}
+                {activeTab === 'analytics' && (
+                    <div className="fade-in">
+                        <TeamAnalytics driverStats={driverStats} />
+                    </div>
+                )}
+
+                {/* Drivers Tab */}
+                {activeTab === 'drivers' && (
+                    <div className="fade-in">
+                        <div className="flex items-center justify-between mb-8">
+                            <h2 className="text-3xl font-racing text-f1-offwhite border-l-4 border-f1-red pl-4">Team Drivers</h2>
+                            <span className="text-f1-warmgray font-mono text-sm">{driverStats.length} Drivers Found</span>
+                        </div>
+
+                        {driverStats.length > 0 ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                {driverStats.map(driver => (
+                                    <TeamDriverCard key={driver.driverId} driver={driver} />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-f1-warmgray italic">No driver records found for this team.</div>
+                        )}
+                    </div>
                 )}
             </div>
         </div>

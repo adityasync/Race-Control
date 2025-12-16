@@ -16,8 +16,9 @@ public class Race {
     private Integer year;
     private Integer round;
 
-    @Column(name = "circuit_id")
-    private Integer circuitId;
+    @ManyToOne
+    @JoinColumn(name = "circuit_id")
+    private Circuit circuit;
 
     private String name;
     private LocalDate date;

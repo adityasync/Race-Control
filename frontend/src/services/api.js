@@ -79,6 +79,14 @@ export const getConstructors = () => api.get('/constructors');
 export const getConstructorById = (id) => api.get(`/constructors/${id}`);
 export const getConstructorDrivers = (id) => api.get(`/constructors/${id}/drivers`);
 export const getConstructorDriverStats = (id) => api.get(`/constructors/${id}/driver-stats`);
+export const getConstructorSeasons = (id) => api.get(`/constructors/${id}/seasons`);
+export const getConstructorCircuits = (id) => api.get(`/constructors/${id}/circuits`);
+
+export const getConstructorDashboardStats = (id) => api.get(`/constructors/${id}/dashboard-stats`);
+export const getConstructorStatusBreakdown = (id) => api.get(`/constructors/${id}/status-breakdown`);
+export const getConstructorPointsHeatmap = (id) => api.get(`/constructors/${id}/points-heatmap`);
+export const getConstructorGeoPerformance = (id) => api.get(`/constructors/${id}/geo-performance`);
+
 export const getRaces = (year) => {
     if (year) return api.get(`/races/season/${year}`);
     return api.get('/races');
