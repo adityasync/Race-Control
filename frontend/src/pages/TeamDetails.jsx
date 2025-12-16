@@ -158,7 +158,7 @@ export default function TeamDetails() {
                         statusStats={statusStats}
                         geoStats={geoStats}
                         heatmapStats={heatmapStats}
-                        setActiveTab={setActiveTab}
+                        setActiveTab={handleTabChange}
                     />
                 )}
 
