@@ -229,6 +229,17 @@ const driverPhotoMap = {
     'hans-binder': '/assets/hans_binder_8bit.png',
     'clemente-biondetti': '/assets/clemente_biondetti_8bit.png',
     'prince-bira': '/assets/prince_bira_8bit.png',
+    // Batch 20
+    'Birger': 'pablo_birger_8bit.png',
+    'Bisch': 'art_bisch_8bit.png',
+    'Blanchard': 'harry_blanchard_8bit.png',
+    'Bleekemolen': 'michael_bleekemolen_8bit.png',
+    'Blignaut': 'alex_blignaut_8bit.png',
+    'Blokdyk': 'trevor_blokdyk_8bit.png',
+    'Blundell': 'mark_blundell_8bit.png',
+    'Boesel': 'raul_boesel_8bit.png',
+    // Batch 21 (Partial)
+    'Boffa': 'menato_boffa_8bit.png',
 };
 
 export function getDriverPhoto(surname, forename) {
