@@ -302,10 +302,42 @@ const driverPhotoMap = {
     'Chamberlain': 'jay_chamberlain_8bit.png',
     'Chandhok': 'karun_chandhok_8bit.png',
     'Chapman': 'colin_chapman_8bit.png',
-    // Batch 28 (Partial)
+    // Batch 28
     'Charlton': 'dave_charlton_8bit.png',
     'Chaves': 'pedro_chaves_8bit.png',
     'Cheesbourg': 'bill_cheesbourg_8bit.png',
+    'Cheever': 'eddie_cheever_8bit.png',
+    'Chiesa': 'andrea_chiesa_8bit.png',
+    'Chilton': 'max_chilton_8bit.png',
+    'Chimeri': 'ettore_chimeri_8bit.png',
+    'Chiron': 'louis_chiron_8bit.png',
+    // Batch 29
+    'Chitwood': 'joie_chitwood_8bit.png',
+    'Christie': 'bob_christie_8bit.png',
+    'Claes': 'johnny_claes_8bit.png',
+    'Clapham': 'david_clapham_8bit.png',
+    'Cogan': 'kevin_cogan_8bit.png',
+    'Colapinto': 'franco_colapinto_8bit.png',
+    'Collomb': 'bernard_collomb_8bit.png',
+    'Colombo': 'alberto_colombo_8bit.png',
+    // Batch 30
+    'Comas': 'erik_comas_8bit.png',
+    'Comotti': 'franco_comotti_8bit.png',
+    'Connor': 'george_connor_8bit.png',
+    'Constantine': 'george_constantine_8bit.png',
+    'Cordts': 'john_cordts_8bit.png',
+    'Courage': 'piers_courage_8bit.png',
+    'Craft': 'chris_craft_8bit.png',
+    'Crawford': 'jim_crawford_8bit.png',
+    // Batch 31
+    'Ray Crawford': 'ray_crawford_8bit.png',
+    'Crespo': 'alberto_crespo_8bit.png',
+    'Creus': 'antonio_creus_8bit.png',
+    'Crockett': 'larry_crockett_8bit.png',
+    'Crook': 'tony_crook_8bit.png',
+    'Cross': 'art_cross_8bit.png',
+    'Crossley': 'geoff_crossley_8bit.png',
+    'Cruz': 'adolfo_cruz_8bit.png',
 };
 
 export function getDriverPhoto(surname, forename) {
