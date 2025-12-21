@@ -374,8 +374,30 @@ const driverPhotoMap = {
     'de Vries': 'nyck_de_vries_8bit.png',
     'di Grassi': 'lucas_di_grassi_8bit.png',
     'Diniz': 'pedro_diniz_8bit.png',
-    // Batch 36 (Partial)
+    // Batch 36
     'Dinsmore': 'duke_dinsmore_8bit.png',
+    'di Resta': 'paul_di_resta_8bit.png',
+    'Dochnal': 'frank_dochnal_8bit.png',
+    'Dolhem': 'jose_dolhem_8bit.png',
+    'Donnelly': 'martin_donnelly_8bit.png',
+    'Donohue': 'mark_donohue_8bit.png',
+    'Doohan': 'jack_doohan_8bit.png',
+    'Doornbos': 'robert_doornbos_8bit.png',
+    // Batch 37
+    "d'Orey": 'fritz_d_orey_8bit.png',
+    'Downing': 'ken_downing_8bit.png',
+    'Drake': 'bob_drake_8bit.png',
+    'Driver': 'paddy_driver_8bit.png',
+    'Drogo': 'piero_drogo_8bit.png',
+    'Duke': 'geoff_duke_8bit.png',
+    'Dumfries': 'johnny_dumfries_8bit.png',
+    'Duncan': 'len_duncan_8bit.png',
+    // Batch 38 (Partial)
+    'Dusio': 'piero_dusio_8bit.png',
+    'Eaton': 'george_eaton_8bit.png',
+    'Ecclestone': 'bernie_ecclestone_8bit.png',
+    'Edmunds': 'don_edmunds_8bit.png',
+    'Edwards': 'guy_edwards_8bit.png',
 };
 
 export function getDriverPhoto(surname, forename) {

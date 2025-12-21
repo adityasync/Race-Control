@@ -319,26 +319,26 @@ Style: **Face only (no helmet)**, Trading Card, 8-bit.
 | **Lucas di Grassi** | 0 | [x] | `assets/lucas_di_grassi_8bit.png` |
 | **Pedro Diniz** | 0 | [x] | `assets/pedro_diniz_8bit.png` |
 | **Duke Dinsmore** | 0 | [x] | `assets/duke_dinsmore_8bit.png` |
-| **Paul di Resta** | 0 | [ ] |  |
-| **Frank Dochnal** | 0 | [ ] |  |
-| **José Dolhem** | 0 | [ ] |  |
-| **Martin Donnelly** | 0 | [ ] |  |
-| **Mark Donohue** | 0 | [ ] |  |
-| **Jack Doohan** | 0 | [ ] |  |
-| **Robert Doornbos** | 0 | [ ] |  |
-| **Fritz d'Orey** | 0 | [ ] |  |
-| **Ken Downing** | 0 | [ ] |  |
-| **Bob Drake** | 0 | [ ] |  |
-| **Paddy Driver** | 0 | [ ] |  |
-| **Piero Drogo** | 0 | [ ] |  |
-| **Geoff Duke** | 0 | [ ] |  |
-| **Johnny Dumfries** | 0 | [ ] |  |
-| **Len Duncan** | 0 | [ ] |  |
-| **Piero Dusio** | 0 | [ ] |  |
-| **George Eaton** | 0 | [ ] |  |
-| **Bernie Ecclestone** | 0 | [ ] |  |
-| **Don Edmunds** | 0 | [ ] |  |
-| **Guy Edwards** | 0 | [ ] |  |
+| **Paul di Resta** | 0 | [x] | `assets/paul_di_resta_8bit.png` |
+| **Frank Dochnal** | 0 | [x] | `assets/frank_dochnal_8bit.png` |
+| **José Dolhem** | 0 | [x] | `assets/jose_dolhem_8bit.png` |
+| **Martin Donnelly** | 0 | [x] | `assets/martin_donnelly_8bit.png` |
+| **Mark Donohue** | 0 | [x] | `assets/mark_donohue_8bit.png` |
+| **Jack Doohan** | 0 | [x] | `assets/jack_doohan_8bit.png` |
+| **Robert Doornbos** | 0 | [x] | `assets/robert_doornbos_8bit.png` |
+| **Fritz d'Orey** | 0 | [x] | `assets/fritz_d_orey_8bit.png` |
+| **Ken Downing** | 0 | [x] | `assets/ken_downing_8bit.png` |
+| **Bob Drake** | 0 | [x] | `assets/bob_drake_8bit.png` |
+| **Paddy Driver** | 0 | [x] | `assets/paddy_driver_8bit.png` |
+| **Piero Drogo** | 0 | [x] | `assets/piero_drogo_8bit.png` |
+| **Geoff Duke** | 0 | [x] | `assets/geoff_duke_8bit.png` |
+| **Johnny Dumfries** | 0 | [x] | `assets/johnny_dumfries_8bit.png` |
+| **Len Duncan** | 0 | [x] | `assets/len_duncan_8bit.png` |
+| **Piero Dusio** | 0 | [x] | `assets/piero_dusio_8bit.png` |
+| **George Eaton** | 0 | [x] | `assets/george_eaton_8bit.png` |
+| **Bernie Ecclestone** | 0 | [x] | `assets/bernie_ecclestone_8bit.png` |
+| **Don Edmunds** | 0 | [x] | `assets/don_edmunds_8bit.png` |
+| **Guy Edwards** | 0 | [x] | `assets/guy_edwards_8bit.png` |
 | **Vic Elford** | 0 | [ ] |  |
 | **Ed Elisian** | 0 | [ ] |  |
 | **Paul Emery** | 0 | [ ] |  |
