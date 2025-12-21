@@ -493,33 +493,7 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* ===== FOOTER ===== */}
-            <footer className="relative py-24 px-6 border-t border-gray-900">
-                <div className="max-w-7xl mx-auto">
-                    {/* Full-width checkered flag banner - CSS pattern for performance */}
-                    <div
-                        className="absolute left-0 right-0 -top-4 h-8"
-                        style={{
-                            backgroundImage: `repeating-conic-gradient(#fff 0% 25%, #000 0% 50%)`,
-                            backgroundSize: '16px 16px'
-                        }}
-                    />
 
-                    <div className="flex flex-col md:flex-row justify-between items-center gap-12">
-                        <div>
-                            <div className="text-5xl font-racing mb-2">Race<span className="text-f1-red"> Control</span></div>
-                            <p className="text-gray-600 font-mono text-sm tracking-wider">THE COMPLETE F1 ARCHIVE • 1950—2024</p>
-                        </div>
-                        <nav className="flex flex-wrap justify-center gap-8">
-                            {['Drivers', 'Teams', 'Races', 'Circuits', 'Analytics'].map((item) => (
-                                <Link key={item} to={`/${item.toLowerCase()}`} className="text-gray-500 hover:text-f1-red transition-colors font-mono text-sm uppercase tracking-wider">
-                                    {item}
-                                </Link>
-                            ))}
-                        </nav>
-                    </div>
-                </div>
-            </footer>
         </div>
     );
 }

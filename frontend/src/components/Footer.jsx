@@ -52,6 +52,9 @@ export default function Footer() {
                 <p className="text-center text-gray-700 font-mono text-xs mt-8">
                     Data sourced from Ergast Developer API
                 </p>
+                <p className="text-center text-gray-700 font-mono text-xs mt-2">
+                    made by <a href="https://github.com/adityasync" target="_blank" rel="noopener noreferrer" className="hover:text-f1-red transition-colors">aditya</a>
+                </p>
             </div>
         </footer>
     );

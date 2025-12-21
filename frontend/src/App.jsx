@@ -3,6 +3,7 @@ import Teams from './pages/Teams';
 import TeamDetails from './pages/TeamDetails';
 import Races from './pages/Races';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import Drivers from './pages/Drivers';
 import DriverProfile from './pages/DriverProfile';
@@ -29,7 +30,7 @@ function App() {
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/health" element={<Health />} />
         </Routes>
-
+        <Footer />
       </div>
     </Router>
   );

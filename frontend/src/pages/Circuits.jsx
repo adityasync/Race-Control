@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { getCircuitsWithStats } from '../services/api';
-import Footer from '../components/Footer';
+
 import SmartLoader from '../components/SmartLoader';
 import { ChevronRight, MapPin } from 'lucide-react';
 
@@ -122,7 +122,7 @@ export default function Circuits() {
                 </div>
             </div>
 
-            <Footer />
+
         </div>
     );
 }

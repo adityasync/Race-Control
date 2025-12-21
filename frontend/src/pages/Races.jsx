@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { getRaces } from '../services/api';
-import Footer from '../components/Footer';
+
 import SmartLoader from '../components/SmartLoader';
 import { Timer, Loader2, Calendar, MapPin, ChevronRight, Flag } from 'lucide-react';
 
@@ -161,7 +161,7 @@ export default function Races() {
                 </div>
             </div>
 
-            <Footer />
+
         </div>
     );
 }

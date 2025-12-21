@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { getDrivers } from '../services/api';
 import DriverCard from '../components/DriverCard';
-import Footer from '../components/Footer';
+
 import { Loader2, Star, Users, ChevronRight } from 'lucide-react';
 
 import SmartLoader from '../components/SmartLoader';
@@ -203,7 +203,7 @@ export default function Drivers() {
                 </div>
             </div>
 
-            <Footer />
+
         </div>
     );
 }

@@ -11,7 +11,7 @@ import {
     PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis,
     CartesianGrid, Legend, LineChart, Line, ScatterChart, Scatter, ZAxis, Area, AreaChart
 } from 'recharts';
-import Footer from '../components/Footer';
+
 import SmartLoader from '../components/SmartLoader';
 import { Loader2, TrendingUp, ChevronRight, Trophy, Timer, Zap, Target, Users, Flag, Swords, AlertCircle } from 'lucide-react';
 import HeadToHead from './HeadToHead';
@@ -858,7 +858,7 @@ export default function Analytics() {
                 )}
             </div>
 
-            <Footer />
+
         </div>
     );
 }

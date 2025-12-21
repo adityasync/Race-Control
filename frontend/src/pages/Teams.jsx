@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { getConstructors } from '../services/api';
-import Footer from '../components/Footer';
+
 import SmartLoader from '../components/SmartLoader';
 import { Trophy, ChevronRight } from 'lucide-react';
 
@@ -153,7 +153,7 @@ export default function Teams() {
                 </div>
             </div>
 
-            <Footer />
+
         </div>
     );
 }
