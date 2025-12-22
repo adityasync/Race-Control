@@ -129,9 +129,13 @@ export default function Circuits() {
                                 </div>
                                 <div className="mt-3 flex items-center justify-between text-xs text-gray-500 border-t border-gray-800/50 pt-3">
                                     <span>First: {circuit.first_race}</span>
-                                    <div className="flex items-center gap-1 group-hover:text-f1-red transition-colors">
+                                    <Link
+                                        to={`/circuits/${circuit.circuit_id}`}
+                                        onClick={(e) => e.stopPropagation()}
+                                        className="flex items-center gap-1 hover:text-f1-red transition-colors cursor-pointer z-20"
+                                    >
                                         View Details <ChevronRight size={12} />
-                                    </div>
+                                    </Link>
                                 </div>
                             </div>
                         </motion.div>
