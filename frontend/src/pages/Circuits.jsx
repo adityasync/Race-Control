@@ -13,6 +13,8 @@ export default function Circuits() {
     const [selectedCircuit, setSelectedCircuit] = useState(null);
     const [stats, setStats] = useState(null);
 
+    const [showMobilePreview, setShowMobilePreview] = useState(false);
+
     useEffect(() => {
         const fetchCircuits = async () => {
             try {
@@ -45,6 +47,11 @@ export default function Circuits() {
         fetchDetails();
     }, [selectedCircuit]);
 
+    const handleCircuitSelect = (circuit) => {
+        setSelectedCircuit(circuit);
+        setShowMobilePreview(true);
+    };
+
     if (loading) return <SmartLoader message="Loading circuits..." />;
 
     // Helper for Stats
@@ -66,19 +73,11 @@ export default function Circuits() {
     return (
         <div className="min-h-screen bg-black flex flex-col md:flex-row overflow-hidden h-screen pt-16">
             {/* Left Panel: Content & List */}
-            <div className="md:w-1/2 lg:w-2/5 flex flex-col h-full bg-black border-r border-gray-900 overflow-y-auto custom-scrollbar relative z-10">
+            <div className={`w-full md:w-1/2 lg:w-2/5 flex-col h-full bg-black border-r border-gray-900 overflow-y-auto custom-scrollbar relative z-10 ${showMobilePreview ? 'hidden md:flex' : 'flex'}`}>
 
                 {/* Header */}
                 <div className="sticky top-0 bg-black/95 backdrop-blur-md border-b border-gray-800 p-6 z-30 shadow-2xl">
-                    <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="flex items-center gap-2 text-gray-500 text-xs font-mono mb-2"
-                    >
-                        <span>Home</span>
-                        <ChevronRight className="w-3 h-3" />
-                        <span className="text-f1-red">Circuits</span>
-                    </motion.div>
+
 
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
@@ -95,7 +94,7 @@ export default function Circuits() {
                 </div>
 
                 {/* List */}
-                <div className="p-4 space-y-3">
+                <div className="p-4 space-y-3 pb-24 md:pb-4">
                     {circuits.map((circuit, i) => (
                         <motion.div
                             key={circuit.circuit_id}
@@ -104,7 +103,7 @@ export default function Circuits() {
                             transition={{ delay: 0.05 * i }}
                         >
                             <div
-                                onClick={() => setSelectedCircuit(circuit)}
+                                onClick={() => handleCircuitSelect(circuit)}
                                 className={`group relative p-4 rounded-xl border cursor-pointer transition-all duration-300 ${selectedCircuit?.circuit_id === circuit.circuit_id
                                     ? 'bg-gray-900 border-f1-red shadow-[0_0_20px_rgba(255,24,1,0.1)]'
                                     : 'bg-gray-900/40 border-gray-800 hover:bg-gray-900 hover:border-gray-700'
@@ -130,13 +129,9 @@ export default function Circuits() {
                                 </div>
                                 <div className="mt-3 flex items-center justify-between text-xs text-gray-500 border-t border-gray-800/50 pt-3">
                                     <span>First: {circuit.first_race}</span>
-                                    <Link
-                                        to={`/circuits/${circuit.circuit_id}`}
-                                        className="flex items-center gap-1 hover:text-f1-red transition-colors z-20"
-                                        onClick={(e) => e.stopPropagation()}
-                                    >
-                                        Full Details <ChevronRight size={12} />
-                                    </Link>
+                                    <div className="flex items-center gap-1 group-hover:text-f1-red transition-colors">
+                                        View Details <ChevronRight size={12} />
+                                    </div>
                                 </div>
                             </div>
                         </motion.div>
@@ -144,8 +139,17 @@ export default function Circuits() {
                 </div>
             </div>
 
-            {/* Right Panel: Preview (Hidden on mobile usually or stacked, handled by flex-col md:flex-row) */}
-            <div className="hidden md:flex md:w-1/2 lg:w-3/5 bg-gradient-to-br from-gray-900 via-black to-black relative items-center justify-center overflow-hidden border-l border-gray-800">
+            {/* Right Panel: Preview */}
+            <div className={`md:flex w-full md:w-1/2 lg:w-3/5 bg-gradient-to-br from-gray-900 via-black to-black relative items-center justify-center overflow-hidden border-l border-gray-800 ${showMobilePreview ? 'flex fixed inset-0 z-50 pt-16' : 'hidden'}`}>
+
+                {/* Mobile Back Button */}
+                <button
+                    onClick={() => setShowMobilePreview(false)}
+                    className="md:hidden absolute top-20 left-4 z-50 flex items-center gap-2 px-4 py-2 bg-black/80 backdrop-blur border border-gray-700 rounded-full text-white text-sm font-mono hover:bg-gray-800 transition-colors"
+                >
+                    <ChevronRight className="rotate-180 w-4 h-4" /> Back to Archive
+                </button>
+
                 {/* Background Grid/Effects */}
                 <div className="absolute inset-0 bg-[url('/assets/grid-bg.svg')] opacity-20 pointer-events-none"></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 pointer-events-none"></div>
@@ -158,12 +162,12 @@ export default function Circuits() {
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 1.05 }}
                             transition={{ duration: 0.4 }}
-                            className="relative w-full h-full flex flex-col p-8 lg:p-12 z-20"
+                            className="relative w-full h-full flex flex-col p-4 md:p-8 lg:p-12 z-20"
                         >
                             {/* Circuit Map Container */}
-                            <div className="flex-1 flex items-center justify-center relative">
+                            <div className="flex-1 flex items-center justify-center relative min-h-[300px]">
                                 {/* Glow Effect behind map */}
-                                <div className="absolute w-[500px] h-[500px] bg-f1-red/5 rounded-full blur-[100px] pointer-events-none"></div>
+                                <div className="absolute w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-f1-red/5 rounded-full blur-[60px] md:blur-[100px] pointer-events-none"></div>
 
                                 <CircuitMap
                                     name={selectedCircuit.name}
@@ -174,7 +178,7 @@ export default function Circuits() {
                             </div>
 
                             {/* Circuit Quick Stats Overlay */}
-                            <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-4 z-20">
+                            <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 z-20 pb-20 md:pb-0">
                                 <StatItem
                                     label="Total Races"
                                     value={selectedCircuit.total_races}
@@ -196,14 +200,14 @@ export default function Circuits() {
                                 />
                                 <Link
                                     to={`/circuits/${selectedCircuit.circuit_id}`}
-                                    className="flex items-center justify-center gap-2 bg-white text-black hover:bg-gray-200 transition-colors rounded-lg font-racing p-3 text-sm"
+                                    className="flex items-center justify-center gap-2 bg-white text-black hover:bg-gray-200 transition-colors rounded-lg font-racing p-3 text-sm col-span-2 lg:col-span-1"
                                 >
                                     View Full Profile
                                 </Link>
                             </div>
 
                             {/* Circuit Location Text Overlay */}
-                            <div className="absolute top-8 right-8 text-right z-10 opacity-50 pointer-events-none select-none">
+                            <div className="absolute top-24 md:top-8 right-8 text-right z-10 opacity-50 pointer-events-none select-none">
                                 <h1 className="text-6xl lg:text-8xl font-black text-gray-800 leading-none tracking-tighter uppercase opacity-30">
                                     {selectedCircuit.location.substring(0, 3)}
                                 </h1>
@@ -214,7 +218,9 @@ export default function Circuits() {
 
                         </motion.div>
                     ) : (
-                        <div className="text-gray-600 font-mono text-sm">Select a circuit to view details</div>
+                        <div className="text-gray-600 font-mono text-sm max-w-xs text-center px-4">
+                            Select a circuit from the archive to view its layout and statistics.
+                        </div>
                     )}
                 </AnimatePresence>
             </div>
