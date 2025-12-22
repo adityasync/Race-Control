@@ -25,33 +25,34 @@ export default function CircuitMap({ circuitId, name, location, country, classNa
 
     // 2. Convert coordinates to SVG path
     const pathData = useMemo(() => {
-        if (!feature || feature.geometry.type !== "LineString") return null;
+        if (!feature) return null;
 
-        const coords = feature.geometry.coordinates;
-        if (!coords || coords.length === 0) return null;
+        const type = feature.geometry.type;
+        if (type !== "LineString" && type !== "MultiLineString") return null;
 
-        // Find bounding box
+        // Normalize to array of Lines (each Line is array of [x, y])
+        // LineString: [ [x,y], [x,y] ] -> Wrap in array -> [ [ [x,y], ... ] ]
+        // MultiLineString: [ [ [x,y], ... ], [ [x,y], ... ] ] -> Already correct
+        const lines = type === "LineString"
+            ? [feature.geometry.coordinates]
+            : feature.geometry.coordinates;
+
+        if (!lines || lines.length === 0) return null;
+
+        // Flatten all points to find bounding box
         let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-        coords.forEach(([x, y]) => {
-            if (x < minX) minX = x;
-            if (y < minY) minY = y;
-            if (x > maxX) maxX = x;
-            if (y > maxY) maxY = y;
+
+        lines.forEach(line => {
+            line.forEach(([x, y]) => {
+                if (x < minX) minX = x;
+                if (y < minY) minY = y;
+                if (x > maxX) maxX = x;
+                if (y > maxY) maxY = y;
+            });
         });
 
         const width = maxX - minX;
         const height = maxY - minY;
-
-        // Add some padding
-        const padding = Math.max(width, height) * 0.1;
-
-        // Projection function: map long/lat to 0-100 space (keeping aspect ratio)
-        // Note: Y is flipped in SVG (0 is top), Lat increases upwards (up is positive).
-        // So we map Lat (y) from [minY, maxY] to [100, 0] or similar.
-
-        // Let's create a ViewBox
-        // We can just output the points directly if we set the viewBox correctly
-        // But flipping Y is important because geo coords: +Y is North, SVG: +Y is Down.
 
         // Let's normalize to 0-100 for simplicity in styling
         const scale = 100 / Math.max(width, height);
@@ -63,23 +64,50 @@ export default function CircuitMap({ circuitId, name, location, country, classNa
         const dx = (100 - scaledWidth) / 2;
         const dy = (100 - scaledHeight) / 2;
 
-        const pathPoints = coords.map(([x, y]) => {
-            const px = ((x - minX) * scale) + dx;
-            // Flip Y: SVG 0 is top. Max lat (maxY) should be at top (small Y). 
-            // We map y from [minY, maxY] -> [0, scaledHeight]
-            // Then flip: scaledHeight - ((y - minY) * scale)
-            // Then center vertically: + dy
-            const py = (100 - dy) - ((y - minY) * scale);
-            return `${px},${py}`;
-        }).join(" L ");
+        // Convert each line to an "M ... L ..." string
+        const pathSegments = lines.map(line => {
+            const linePoints = line.map(([x, y]) => {
+                const px = ((x - minX) * scale) + dx;
+                // Flip Y and center
+                const py = (100 - dy) - ((y - minY) * scale);
+                return `${px},${py}`;
+            }).join(" L ");
+            return `M ${linePoints}`;
+        });
 
-        return `M ${pathPoints}`;
+        // Join all segments into one path string
+        return pathSegments.join(" ");
     }, [feature]);
 
     if (!feature || !pathData) {
         return (
-            <div className={`flex items-center justify-center bg-gray-900/50 rounded-lg border border-gray-800 ${className}`}>
-                <span className="text-gray-600 text-xs font-mono">Map Unavailable</span>
+            <div className={`relative flex items-center justify-center bg-gray-900/40 rounded-lg border border-gray-800/50 overflow-hidden ${className}`}>
+                {/* Background Grid Pattern */}
+                <div className="absolute inset-0 opacity-10 bg-[url('/grid-bg.png')] bg-center bg-cover mix-blend-overlay"></div>
+
+                {/* Diagonal Striped overlay */}
+                <div className="absolute inset-0 opacity-5" style={{
+                    backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, #000 10px, #000 20px)'
+                }}></div>
+
+                <div className="relative z-10 flex flex-col items-center gap-2">
+                    <motion.div
+                        initial={{ opacity: 0.5 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
+                        className="w-12 h-12 border-2 border-gray-700 rounded-full flex items-center justify-center"
+                    >
+                        <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                    </motion.div>
+                    <div className="flex flex-col items-center">
+                        <span className="text-gray-500 text-xs font-mono tracking-widest uppercase mb-1">Telemetry Offline</span>
+                        <span className="text-gray-700 text-[10px] font-mono tracking-widest">Layout Coming Soon</span>
+                    </div>
+                </div>
+
+                {/* Corner accents */}
+                <div className="absolute top-2 left-2 w-2 h-2 border-t border-l border-red-500/30"></div>
+                <div className="absolute bottom-2 right-2 w-2 h-2 border-b border-r border-red-500/30"></div>
             </div>
         );
     }
