@@ -414,6 +414,23 @@ const driverPhotoMap = {
     'C. Fabi': 'corrado_fabi_8bit.png',
     'Fabre': 'pascal_fabre_8bit.png',
     'Facetti': 'carlo_facetti_8bit.png',
+    // Batch 40
+    'Fairman': 'jack_fairman_8bit.png',
+    'Faulkner': 'walt_faulkner_8bit.png',
+    'Firman': 'ralph_firman_8bit.png',
+    'Fischer': 'rudi_fischer_8bit.png',
+    'Fisher': 'mike_fisher_8bit.png',
+    // Batch 41
+    'Fitch': 'john_fitch_8bit.png',
+    'W. Fittipaldi': 'wilson_fittipaldi_8bit.png',
+    'C. Fittipaldi': 'christian_fittipaldi_8bit.png',
+    'P. Fittipaldi': 'pietro_fittipaldi_8bit.png',
+    'Fitzau': 'theo_fitzau_8bit.png',
+    'Flinterman': 'jan_flinterman_8bit.png',
+    'Flockhart': 'ron_flockhart_8bit.png',
+    'Fohr': 'myron_fohr_8bit.png',
+    // Batch 42 (Partial)
+    'Foitek': 'gregor_foitek_8bit.png',
 };
 
 export function getDriverPhoto(surname, forename) {
