@@ -97,3 +97,13 @@ h6 {
   scrollbar-width: thin;
   scrollbar-color: #E10600 #1a1a1a;
 }
+
+/* Premium Text Effects */
+.stroke-text {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+  color: transparent;
+}
+
+.font-racing {
+  font-family: 'Oswald', sans-serif;
+}

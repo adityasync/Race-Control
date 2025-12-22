@@ -1,20 +1,26 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { getCircuitsWithStats } from '../services/api';
+import { motion, AnimatePresence } from 'framer-motion';
+import { getCircuitsWithStats, getCircuitStats } from '../services/api';
 
 import SmartLoader from '../components/SmartLoader';
-import { ChevronRight, MapPin } from 'lucide-react';
+import CircuitMap from '../components/CircuitMap';
+import { ChevronRight, MapPin, Flag, Timer, Trophy } from 'lucide-react';
 
 export default function Circuits() {
     const [circuits, setCircuits] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [selectedCircuit, setSelectedCircuit] = useState(null);
+    const [stats, setStats] = useState(null);
 
     useEffect(() => {
         const fetchCircuits = async () => {
             try {
                 const res = await getCircuitsWithStats();
                 setCircuits(res.data);
+                if (res.data.length > 0) {
+                    setSelectedCircuit(res.data[0]);
+                }
             } catch (err) {
                 console.error('Failed to load circuits:', err);
             } finally {
@@ -24,105 +30,194 @@ export default function Circuits() {
         fetchCircuits();
     }, []);
 
+    // Fetch detailed stats when selection changes
+    useEffect(() => {
+        if (!selectedCircuit) return;
+
+        const fetchDetails = async () => {
+            try {
+                const res = await getCircuitStats(selectedCircuit.circuit_id);
+                setStats(res.data);
+            } catch (err) {
+                console.error('Failed to load circuit stats:', err);
+            }
+        };
+        fetchDetails();
+    }, [selectedCircuit]);
+
     if (loading) return <SmartLoader message="Loading circuits..." />;
 
-    const byCountry = circuits.reduce((acc, c) => {
-        if (!acc[c.country]) acc[c.country] = [];
-        acc[c.country].push(c);
-        return acc;
-    }, {});
+    // Helper for Stats
+    const StatItem = ({ label, value, subtext, icon: Icon, color = "text-white" }) => (
+        <div className="flex items-center gap-3 bg-gray-900/50 p-3 rounded-lg border border-gray-800 backdrop-blur-sm overflow-hidden">
+            <div className={`shrink-0 p-2 rounded-full bg-gray-800 ${color}`}>
+                <Icon size={16} />
+            </div>
+            <div className="min-w-0 flex-1">
+                <div className="text-[10px] text-gray-500 uppercase font-mono tracking-wider truncate">{label}</div>
+                <div className="text-sm md:text-lg font-racing text-white truncate">{value}</div>
+                {subtext && <div className="text-[10px] text-gray-400 font-mono truncate" title={subtext}>{subtext}</div>}
+            </div>
+        </div>
+    );
+
+    const lapRecord = stats?.fastestLaps?.[0];
 
     return (
-        <div className="min-h-screen bg-black">
-            {/* Header */}
-            <div className="bg-gradient-to-b from-gray-900 to-black border-b border-gray-800">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="min-h-screen bg-black flex flex-col md:flex-row overflow-hidden h-screen pt-16">
+            {/* Left Panel: Content & List */}
+            <div className="md:w-1/2 lg:w-2/5 flex flex-col h-full bg-black border-r border-gray-900 overflow-y-auto custom-scrollbar relative z-10">
+
+                {/* Header */}
+                <div className="sticky top-0 bg-black/95 backdrop-blur-md border-b border-gray-800 p-6 z-30 shadow-2xl">
                     <motion.div
-                        className="flex items-center gap-2 text-gray-500 text-sm font-mono mb-4"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex items-center gap-2 text-gray-500 text-xs font-mono mb-2"
                     >
                         <span>Home</span>
-                        <ChevronRight className="w-4 h-4" />
+                        <ChevronRight className="w-3 h-3" />
                         <span className="text-f1-red">Circuits</span>
                     </motion.div>
 
                     <motion.div
-                        className="flex flex-col md:flex-row md:items-end justify-between gap-6"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.1 }}
                     >
-                        <div className="flex items-center gap-4">
-                            <div className="w-2 h-16 bg-f1-red"></div>
-                            <div>
-                                <h1 className="text-5xl md:text-6xl text-white font-racing tracking-tight uppercase">
-                                    Circuit <span className="text-f1-red">Archive</span>
-                                </h1>
-                                <p className="text-gray-500 font-mono text-sm mt-2">
-                                    {circuits.length} circuits across {Object.keys(byCountry).length} countries
-                                </p>
-                            </div>
-                        </div>
+                        <h1 className="text-3xl md:text-4xl text-white font-racing tracking-tight uppercase">
+                            Circuit <span className="text-f1-red">Archive</span>
+                        </h1>
+                        <p className="text-gray-500 text-sm mt-1 max-w-md">
+                            Explore the legendary tracks of Formula 1 history. Select a circuit to view its layout and statistics.
+                        </p>
                     </motion.div>
                 </div>
-            </div>
 
-            {/* Content */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* List */}
+                <div className="p-4 space-y-3">
                     {circuits.map((circuit, i) => (
                         <motion.div
                             key={circuit.circuit_id}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.02 }}
+                            transition={{ delay: 0.05 * i }}
                         >
-                            <Link
-                                to={`/circuits/${circuit.circuit_id}`}
-                                className="group block bg-gray-900 border border-gray-800 hover:border-f1-red p-5 transition-all"
+                            <div
+                                onClick={() => setSelectedCircuit(circuit)}
+                                className={`group relative p-4 rounded-xl border cursor-pointer transition-all duration-300 ${selectedCircuit?.circuit_id === circuit.circuit_id
+                                    ? 'bg-gray-900 border-f1-red shadow-[0_0_20px_rgba(255,24,1,0.1)]'
+                                    : 'bg-gray-900/40 border-gray-800 hover:bg-gray-900 hover:border-gray-700'
+                                    }`}
                             >
-                                <div className="flex items-start justify-between">
-                                    <div className="flex-1 min-w-0">
-                                        <h2 className="text-lg font-racing text-white truncate group-hover:text-f1-red transition-colors">
+                                <div className="flex justify-between items-start">
+                                    <div>
+                                        <h3 className={`text-lg font-racing transition-colors ${selectedCircuit?.circuit_id === circuit.circuit_id ? 'text-white' : 'text-gray-300 group-hover:text-white'
+                                            }`}>
                                             {circuit.name}
-                                        </h2>
-                                        <div className="flex items-center gap-2 text-gray-500 text-sm mt-1">
-                                            <MapPin size={14} />
+                                        </h3>
+                                        <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
+                                            <MapPin size={12} />
                                             <span>{circuit.location}, {circuit.country}</span>
                                         </div>
                                     </div>
-                                    <ChevronRight className="w-5 h-5 text-gray-600 group-hover:text-f1-red transition-colors" />
-                                </div>
-
-                                <div className="mt-4 grid grid-cols-3 gap-2 text-center text-xs">
-                                    <div className="bg-black p-2 rounded">
-                                        <div className="text-white font-racing text-lg">{circuit.total_races}</div>
-                                        <div className="text-gray-500">Races</div>
-                                    </div>
-                                    <div className="bg-black p-2 rounded">
-                                        <div className="text-cyan-400 font-racing text-lg">{circuit.first_race}</div>
-                                        <div className="text-gray-500">First</div>
-                                    </div>
-                                    <div className="bg-black p-2 rounded">
-                                        <div className="text-f1-red font-racing text-lg">{circuit.last_race}</div>
-                                        <div className="text-gray-500">Last</div>
+                                    <div className="flex flex-col items-end">
+                                        <span className={`text-xs font-mono px-2 py-1 rounded ${selectedCircuit?.circuit_id === circuit.circuit_id ? 'bg-f1-red text-white' : 'bg-gray-800 text-gray-400'
+                                            }`}>
+                                            {circuit.total_races} Races
+                                        </span>
                                     </div>
                                 </div>
-
-                                {/* Racing stripe */}
-                                <div className="mt-4 flex gap-1">
-                                    <div className="h-1 flex-1 bg-gray-800 group-hover:bg-f1-red transition-colors"></div>
-                                    <div className="h-1 w-8 bg-gray-800 group-hover:bg-orange-500 transition-colors"></div>
-                                    <div className="h-1 w-4 bg-gray-800 group-hover:bg-yellow-500 transition-colors"></div>
+                                <div className="mt-3 flex items-center justify-between text-xs text-gray-500 border-t border-gray-800/50 pt-3">
+                                    <span>First: {circuit.first_race}</span>
+                                    <Link
+                                        to={`/circuits/${circuit.circuit_id}`}
+                                        className="flex items-center gap-1 hover:text-f1-red transition-colors z-20"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        Full Details <ChevronRight size={12} />
+                                    </Link>
                                 </div>
-                            </Link>
+                            </div>
                         </motion.div>
                     ))}
                 </div>
             </div>
 
+            {/* Right Panel: Preview (Hidden on mobile usually or stacked, handled by flex-col md:flex-row) */}
+            <div className="hidden md:flex md:w-1/2 lg:w-3/5 bg-gradient-to-br from-gray-900 via-black to-black relative items-center justify-center overflow-hidden border-l border-gray-800">
+                {/* Background Grid/Effects */}
+                <div className="absolute inset-0 bg-[url('/assets/grid-bg.svg')] opacity-20 pointer-events-none"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 pointer-events-none"></div>
 
+                <AnimatePresence mode="wait">
+                    {selectedCircuit ? (
+                        <motion.div
+                            key={selectedCircuit.circuit_id}
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 1.05 }}
+                            transition={{ duration: 0.4 }}
+                            className="relative w-full h-full flex flex-col p-8 lg:p-12 z-20"
+                        >
+                            {/* Circuit Map Container */}
+                            <div className="flex-1 flex items-center justify-center relative">
+                                {/* Glow Effect behind map */}
+                                <div className="absolute w-[500px] h-[500px] bg-f1-red/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+                                <CircuitMap
+                                    name={selectedCircuit.name}
+                                    location={selectedCircuit.location}
+                                    country={selectedCircuit.country}
+                                    className="w-full max-w-2xl h-full max-h-[600px] z-10"
+                                />
+                            </div>
+
+                            {/* Circuit Quick Stats Overlay */}
+                            <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-4 z-20">
+                                <StatItem
+                                    label="Total Races"
+                                    value={selectedCircuit.total_races}
+                                    icon={Flag}
+                                    color="text-f1-red"
+                                />
+                                <StatItem
+                                    label="Lap Record"
+                                    value={lapRecord ? lapRecord.fastest_lap_time : "N/A"}
+                                    subtext={lapRecord ? `${lapRecord.driver} (${lapRecord.year})` : "-"}
+                                    icon={Trophy}
+                                    color="text-yellow-400"
+                                />
+                                <StatItem
+                                    label="First / Last"
+                                    value={`${selectedCircuit.first_race} - ${selectedCircuit.last_race}`}
+                                    icon={Timer}
+                                    color="text-cyan-400"
+                                />
+                                <Link
+                                    to={`/circuits/${selectedCircuit.circuit_id}`}
+                                    className="flex items-center justify-center gap-2 bg-white text-black hover:bg-gray-200 transition-colors rounded-lg font-racing p-3 text-sm"
+                                >
+                                    View Full Profile
+                                </Link>
+                            </div>
+
+                            {/* Circuit Location Text Overlay */}
+                            <div className="absolute top-8 right-8 text-right z-10 opacity-50 pointer-events-none select-none">
+                                <h1 className="text-6xl lg:text-8xl font-black text-gray-800 leading-none tracking-tighter uppercase opacity-30">
+                                    {selectedCircuit.location.substring(0, 3)}
+                                </h1>
+                                <h1 className="text-6xl lg:text-8xl font-black text-transparent stroke-text leading-none tracking-tighter uppercase opacity-30">
+                                    {selectedCircuit.country.substring(0, 3)}
+                                </h1>
+                            </div>
+
+                        </motion.div>
+                    ) : (
+                        <div className="text-gray-600 font-mono text-sm">Select a circuit to view details</div>
+                    )}
+                </AnimatePresence>
+            </div>
         </div>
     );
 }
