@@ -33,11 +33,19 @@ export default function TeamCircuits({ circuits }) {
                     <h2 className="text-xl font-racing text-f1-offwhite mb-6 flex items-center gap-2">
                         <MapPin className="text-f1-red" /> Best Hunting Grounds
                     </h2>
-                    <div className="h-80">
+                    <div className="h-[400px] md:h-80">
                         <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={topCircuits} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                            <BarChart data={topCircuits} margin={{ top: 20, right: 30, left: 0, bottom: 60 }}>
                                 <CartesianGrid strokeDasharray="3 3" stroke="#333" vertical={false} />
-                                <XAxis dataKey="circuit" stroke="#999" tick={{ fontSize: 12 }} interval={0} angle={-15} textAnchor="end" />
+                                <XAxis
+                                    dataKey="circuit"
+                                    stroke="#999"
+                                    tick={{ fontSize: 10 }}
+                                    interval={0}
+                                    angle={-45}
+                                    textAnchor="end"
+                                    height={60}
+                                />
                                 <YAxis stroke="#eee" />
                                 <Tooltip
                                     contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #E10600', color: '#fff' }}

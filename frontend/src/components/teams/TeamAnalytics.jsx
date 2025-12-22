@@ -51,9 +51,9 @@ export default function TeamAnalytics({ driverStats }) {
                         <h3 className="text-xl font-racing text-f1-offwhite mb-6 flex items-center gap-2">
                             <TrendingUp size={20} className="text-yellow-500" /> Top Point Scorers
                         </h3>
-                        <div className="h-80">
+                        <div className="h-[500px] md:h-80">
                             <ResponsiveContainer width="100%" height="100%">
-                                <BarChart data={topPoints} layout="vertical" margin={{ left: 40 }}>
+                                <BarChart data={topPoints} layout="vertical" margin={{ left: 10, right: 30 }}>
                                     <CartesianGrid strokeDasharray="3 3" stroke="#333" horizontal={false} />
                                     <XAxis type="number" stroke="#999" fontSize={12} tickLine={false} axisLine={false} />
                                     <YAxis
@@ -63,7 +63,8 @@ export default function TeamAnalytics({ driverStats }) {
                                         fontSize={12}
                                         tickLine={false}
                                         axisLine={false}
-                                        width={100}
+                                        width={80}
+                                        tickFormatter={(val) => val.split(' ').pop()}
                                     />
                                     <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255,255,255,0.05)' }} />
                                     <Bar dataKey="totalPoints" name="Points" radius={[0, 4, 4, 0]}>
@@ -81,9 +82,9 @@ export default function TeamAnalytics({ driverStats }) {
                         <h3 className="text-xl font-racing text-f1-offwhite mb-6 flex items-center gap-2">
                             <Activity size={20} className="text-cyan-400" /> Driver Efficiency (Pts/Race)
                         </h3>
-                        <div className="h-80">
+                        <div className="h-[500px] md:h-80">
                             <ResponsiveContainer width="100%" height="100%">
-                                <BarChart data={efficientDrivers} layout="vertical" margin={{ left: 40 }}>
+                                <BarChart data={efficientDrivers} layout="vertical" margin={{ left: 10, right: 30 }}>
                                     <CartesianGrid strokeDasharray="3 3" stroke="#333" horizontal={false} />
                                     <XAxis type="number" stroke="#999" fontSize={12} tickLine={false} axisLine={false} />
                                     <YAxis
@@ -93,7 +94,8 @@ export default function TeamAnalytics({ driverStats }) {
                                         fontSize={12}
                                         tickLine={false}
                                         axisLine={false}
-                                        width={100}
+                                        width={80}
+                                        tickFormatter={(val) => val.split(' ').pop()}
                                     />
                                     <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255,255,255,0.05)' }} />
                                     <Bar dataKey="efficiency" name="Pts/Race" radius={[0, 4, 4, 0]}>

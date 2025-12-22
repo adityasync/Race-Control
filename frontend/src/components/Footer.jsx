@@ -14,8 +14,8 @@ export default function Footer() {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16 pt-8 md:pt-20">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-                    <div>
-                        <Link to="/" className="flex items-center gap-1 group">
+                    <div className="text-center md:text-left">
+                        <Link to="/" className="flex items-center justify-center md:justify-start gap-1 group">
                             <span className="text-4xl font-racing text-white group-hover:text-f1-red transition-colors">
                                 Race<span className="text-f1-red group-hover:text-white"> Control</span>
                             </span>
@@ -25,17 +25,14 @@ export default function Footer() {
                         </p>
                     </div>
 
-                    <nav className="flex flex-wrap justify-center gap-6">
-                        {['Drivers', 'Teams', 'Races', 'Circuits', 'Analytics'].map((item) => (
-                            <Link
-                                key={item}
-                                to={`/${item.toLowerCase()}`}
-                                className="text-gray-500 hover:text-f1-red transition-colors font-mono text-sm uppercase tracking-wider"
-                            >
-                                {item}
-                            </Link>
-                        ))}
-                    </nav>
+                    <div className="text-center md:text-right">
+                        <blockquote className="font-racing text-lg md:text-xl text-f1-offwhite italic">
+                            &quot;If my mom had balls, she&apos;d be my dad&quot;
+                        </blockquote>
+                        <p className="text-f1-red font-mono text-xs uppercase mt-2 tracking-widest">
+                            — <Link to="/drivers/830" className="hover:text-white transition-colors border-b border-transparent hover:border-white">Max Verstappen</Link>
+                        </p>
+                    </div>
                 </div>
 
                 {/* Racing stripe divider */}

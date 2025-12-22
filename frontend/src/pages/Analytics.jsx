@@ -299,12 +299,19 @@ export default function Analytics() {
                         </AnalyticsCard>
 
                         <AnalyticsCard title="Pole Position to Win Conversion" icon={<Trophy />} subtitle="All-time (min 5 poles)">
-                            <div className="w-full h-[300px] md:h-[400px]">
+                            <div className="w-full h-[500px] md:h-[400px]">
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <BarChart data={poleToWin.slice(0, 15)} layout="vertical" margin={{ left: 120 }}>
+                                    <BarChart data={poleToWin.slice(0, 15)} layout="vertical" margin={{ left: 10, right: 30 }}>
                                         <CartesianGrid strokeDasharray="3 3" stroke="#333" />
                                         <XAxis type="number" stroke="#666" tickFormatter={v => `${v}%`} domain={[0, 100]} />
-                                        <YAxis type="category" dataKey="driver" stroke="#666" tick={{ fill: '#fff', fontSize: 11 }} />
+                                        <YAxis
+                                            type="category"
+                                            dataKey="driver"
+                                            stroke="#666"
+                                            tick={{ fill: '#fff', fontSize: 11 }}
+                                            width={100}
+                                            tickFormatter={(val) => val.split(' ').pop()}
+                                        />
                                         <Tooltip
                                             contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #E10600' }}
                                             formatter={(v, name) => [name === 'conversion_rate' ? `${v}%` : v, name === 'conversion_rate' ? 'Win Rate' : name === 'poles' ? 'Poles' : 'Wins']}
@@ -343,12 +350,19 @@ export default function Analytics() {
                     <div className="space-y-8">
                         {/* Grid Performance */}
                         <AnalyticsCard title="Overtaking Performance" icon={<Zap />} subtitle={`${selectedSeason} - Positions Gained/Lost`}>
-                            <div className="w-full h-[300px] md:h-[400px]">
+                            <div className="w-full h-[500px] md:h-[400px]">
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <BarChart data={gridPerf.slice(0, 15)} layout="vertical" margin={{ left: 120 }}>
+                                    <BarChart data={gridPerf.slice(0, 15)} layout="vertical" margin={{ left: 10, right: 30 }}>
                                         <CartesianGrid strokeDasharray="3 3" stroke="#333" />
                                         <XAxis type="number" stroke="#666" />
-                                        <YAxis type="category" dataKey="driver" stroke="#666" tick={{ fill: '#fff', fontSize: 11 }} />
+                                        <YAxis
+                                            type="category"
+                                            dataKey="driver"
+                                            stroke="#666"
+                                            tick={{ fill: '#fff', fontSize: 11 }}
+                                            width={100}
+                                            tickFormatter={(val) => val.split(' ').pop()}
+                                        />
                                         <Tooltip contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #E10600' }} />
                                         <Bar dataKey="avg_positions_gained" fill="#4CC9F0" name="Avg Positions Gained" radius={[0, 4, 4, 0]} />
                                     </BarChart>
@@ -580,12 +594,19 @@ export default function Analytics() {
                     <div className="space-y-8">
                         {/* Pit Stop Performance */}
                         <AnalyticsCard title="Pit Stop Performance" icon={<Timer />} subtitle={`${selectedSeason} Average Times`}>
-                            <div className="w-full h-[300px] md:h-[400px]">
+                            <div className="w-full h-[500px] md:h-[400px]">
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <BarChart data={pitStops.slice(0, 15)} layout="vertical" margin={{ left: 100 }}>
+                                    <BarChart data={pitStops.slice(0, 15)} layout="vertical" margin={{ left: 10, right: 30 }}>
                                         <CartesianGrid strokeDasharray="3 3" stroke="#333" />
                                         <XAxis type="number" stroke="#666" tickFormatter={v => `${v.toFixed(1)}s`} />
-                                        <YAxis type="category" dataKey="driver" stroke="#666" tick={{ fill: '#fff', fontSize: 11 }} />
+                                        <YAxis
+                                            type="category"
+                                            dataKey="driver"
+                                            stroke="#666"
+                                            tick={{ fill: '#fff', fontSize: 11 }}
+                                            width={100}
+                                            tickFormatter={(val) => val.split(' ').pop()}
+                                        />
                                         <Tooltip
                                             contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #E10600' }}
                                             formatter={v => [`${v.toFixed(3)}s`, 'Avg Pit Time']}
@@ -765,12 +786,19 @@ export default function Analytics() {
 
                         {/* Race Pace Gap */}
                         <AnalyticsCard title="Race Pace Deficit" icon={<TrendingUp />} subtitle={`${selectedSeason} • Average Time Lost to Race Winner (seconds)`}>
-                            <div className="w-full h-[350px] md:h-[400px]">
+                            <div className="w-full h-[500px] md:h-[400px]">
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <BarChart data={racePaceGap} layout="vertical" margin={{ left: 100 }}>
+                                    <BarChart data={racePaceGap} layout="vertical" margin={{ left: 10, right: 30 }}>
                                         <CartesianGrid strokeDasharray="3 3" stroke="#333" />
                                         <XAxis type="number" stroke="#666" tickFormatter={v => `+${v}s`} />
-                                        <YAxis type="category" dataKey="driver" stroke="#666" tick={{ fill: '#fff', fontSize: 11 }} />
+                                        <YAxis
+                                            type="category"
+                                            dataKey="driver"
+                                            stroke="#666"
+                                            tick={{ fill: '#fff', fontSize: 11 }}
+                                            width={100}
+                                            tickFormatter={(val) => val.split(' ').pop()}
+                                        />
                                         <Tooltip
                                             contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #E10600' }}
                                             formatter={v => [`+${v}s`, 'Avg Gap per Race']}
