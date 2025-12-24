@@ -4,6 +4,9 @@ import com.f1pedia.domain.Circuit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Repository for accessing Circuit data.
+ */
 @Repository
 public interface CircuitRepository extends JpaRepository<Circuit, Integer> {
 }

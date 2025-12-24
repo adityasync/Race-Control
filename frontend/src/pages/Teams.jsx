@@ -1,10 +1,15 @@
+
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion'; // eslint-disable-line no-unused-vars
 import { getConstructorsWithStats } from '../services/api';
 import TeamCard from '../components/TeamCard';
 import SmartLoader from '../components/SmartLoader';
 import { ChevronRight, Search, Shuffle, Filter, Trophy, Calendar } from 'lucide-react';
 
+/**
+ * Teams Page
+ * Displays a grid of all F1 constructors/teams with filtering and sorting options.
+ */
 export default function Teams() {
     const [teams, setTeams] = useState([]);
     const [filteredTeams, setFilteredTeams] = useState([]);
@@ -65,7 +70,7 @@ export default function Teams() {
     const handleRandomTeam = () => {
         if (teams.length > 0) {
             const random = teams[Math.floor(Math.random() * teams.length)];
-            window.location.href = `/teams/${random.constructorId}`;
+            window.location.href = `/ teams / ${random.constructorId} `;
         }
     };
 
@@ -201,7 +206,7 @@ export default function Teams() {
                 {/* Teams Grid */}
                 {filteredTeams.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-2 pb-20">
-                        <AnimatePresence mode='wait'>
+                        <AnimatePresence>
                             {filteredTeams.map((team, i) => (
                                 <motion.div
                                     key={team.constructorId}

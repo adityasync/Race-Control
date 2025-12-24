@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight, MapPin } from 'lucide-react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'; // eslint-disable-line no-unused-vars
 import TeamLogo from './TeamLogo';
 import { getTeamColor } from '../utils/teamColors';
 import { getFlagUrl } from '../utils/countryUtils';

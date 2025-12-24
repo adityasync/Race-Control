@@ -4,6 +4,10 @@ import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Responsi
 import { Users, Trophy, Flag, Timer, AlertCircle } from 'lucide-react';
 import SmartLoader from '../components/SmartLoader';
 
+/**
+ * HeadToHead Page
+ * visualization allowing comparison between two drivers using radar charts and key metrics.
+ */
 export default function HeadToHead() {
     const [drivers, setDrivers] = useState([]);
     const [driver1, setDriver1] = useState(null);

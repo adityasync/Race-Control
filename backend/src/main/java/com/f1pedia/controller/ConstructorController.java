@@ -10,11 +10,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/constructors")
+/**
+ * Manages Constructor (Team) data.
+ * Provides APIs for team details, driver rosters, and team-specific performance
+ * analytics.
+ */
 public class ConstructorController {
 
     @Autowired
     private ConstructorRepository constructorRepository;
 
+    // List all constructors, optionally filtering by name
     @GetMapping
     public List<Constructor> getAllConstructors(@RequestParam(required = false) String search) {
         if (search != null && !search.trim().isEmpty()) {
@@ -23,11 +29,14 @@ public class ConstructorController {
         return constructorRepository.findAll();
     }
 
+    // Returns all constructors enriched with aggregate stats (wins, championships,
+    // etc.)
     @GetMapping("/stats")
     public List<com.f1pedia.dto.ConstructorStatsDTO> getConstructorsWithStats() {
         return constructorRepository.findAllWithStats();
     }
 
+    // Fetch team details by ID
     @GetMapping("/{id}")
     public ResponseEntity<Constructor> getConstructorById(@PathVariable int id) {
         return constructorRepository.findById(id)
@@ -41,11 +50,13 @@ public class ConstructorController {
     @Autowired
     private com.f1pedia.repository.ResultRepository resultRepository;
 
+    // Get current and past drivers for this team
     @GetMapping("/{id}/drivers")
     public List<com.f1pedia.domain.Driver> getDriversByConstructor(@PathVariable Integer id) {
         return driverRepository.findDriversByConstructorId(id);
     }
 
+    // detailed driver stats specifically while driving for this team
     @GetMapping("/{id}/driver-stats")
     public List<java.util.Map<String, Object>> getDriverStatsByConstructor(@PathVariable Integer id) {
         List<Object[]> results = resultRepository.findDriverStatsByConstructorId(id);
@@ -79,6 +90,7 @@ public class ConstructorController {
                 .toList();
     }
 
+    // Year-by-year performance breakdown
     @GetMapping("/{id}/seasons")
     public List<java.util.Map<String, Object>> getConstructorSeasons(@PathVariable Integer id) {
         List<Object[]> results = resultRepository.findConstructorSeasonStats(id);
@@ -121,6 +133,7 @@ public class ConstructorController {
         }).collect(java.util.stream.Collectors.toList());
     }
 
+    // Performance breakdown by circuit/track
     @GetMapping("/{id}/circuits")
     public List<java.util.Map<String, Object>> getConstructorCircuits(@PathVariable Integer id) {
         List<Object[]> results = resultRepository.findConstructorCircuitStats(id);
@@ -171,6 +184,7 @@ public class ConstructorController {
         return ((Number) col).intValue();
     }
 
+    // Key dashboard metrics: Poles, Fastest Laps, and Podiums
     @GetMapping("/{id}/dashboard-stats")
     public java.util.Map<String, Object> getConstructorDashboardStats(@PathVariable Integer id) {
         List<com.f1pedia.domain.Result> results = resultRepository.findByConstructorConstructorId(id);
@@ -217,6 +231,7 @@ public class ConstructorController {
         return stats;
     }
 
+    // Reliability Analysis: Breakdown of Mechanical vs Accident DNFs
     @GetMapping("/{id}/status-breakdown")
     public List<java.util.Map<String, Object>> getConstructorStatusBreakdown(@PathVariable Integer id) {
         List<com.f1pedia.domain.Result> results = resultRepository.findByConstructorConstructorId(id);
@@ -253,6 +268,7 @@ public class ConstructorController {
                 .toList();
     }
 
+    // Heatmap Visualization: Season vs Round performance
     @GetMapping("/{id}/points-heatmap")
     public List<java.util.Map<String, Object>> getConstructorPointsHeatmap(@PathVariable Integer id) {
         List<com.f1pedia.domain.Result> results = resultRepository.findByConstructorConstructorId(id);
@@ -297,6 +313,7 @@ public class ConstructorController {
                 .toList();
     }
 
+    // Performance by Country: Where does this team historically do best?
     @GetMapping("/{id}/geo-performance")
     public List<java.util.Map<String, Object>> getConstructorGeoPerformance(@PathVariable Integer id) {
         List<com.f1pedia.domain.Result> results = resultRepository.findByConstructorConstructorId(id);

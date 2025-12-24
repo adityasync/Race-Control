@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
 import { getDrivers } from '../services/api';
 import DriverCard from '../components/DriverCard';
 
@@ -7,6 +7,7 @@ import { Loader2, Star, Users, ChevronRight } from 'lucide-react';
 
 import SmartLoader from '../components/SmartLoader';
 
+// Page for listing and searching all F1 drivers throughout history
 export default function Drivers() {
     const [allDrivers, setAllDrivers] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -33,7 +34,7 @@ export default function Drivers() {
 
     if (loading) return <SmartLoader message="Loading Drivers Archive..." />;
 
-    // Filter logic
+    // Filtering and Sorting logic for tabs
     const filteredDrivers = allDrivers.filter(d => {
         const fullSearch = `${d.forename} ${d.surname}`.toLowerCase();
         return fullSearch.includes(searchTerm.toLowerCase());
@@ -53,7 +54,7 @@ export default function Drivers() {
         : activeTab === 'legends' ? legends
             : currentEra;
 
-    // Pagination logic
+    // Pagination
     const totalPages = Math.ceil(displayedList.length / driversPerPage);
     const indexOfLastDriver = currentPage * driversPerPage;
     const indexOfFirstDriver = indexOfLastDriver - driversPerPage;
@@ -158,7 +159,7 @@ export default function Drivers() {
 
                 {/* Driver Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 min-h-[50vh]">
-                    {currentDriversPage.map((driver, i) => (
+                    {currentDriversPage.map((driver) => (
                         <motion.div
                             key={driver.driverId}
                             initial={{ opacity: 0 }}

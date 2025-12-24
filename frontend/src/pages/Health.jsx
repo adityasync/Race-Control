@@ -1,5 +1,9 @@
 import React from 'react';
 
+/**
+ * Health Page
+ * A fun system status page featuring an F1-themed quote and GIF.
+ */
 export default function Health() {
     return (
         <div className="h-screen w-screen bg-f1-black flex flex-col items-center justify-center p-4 text-center overflow-hidden">

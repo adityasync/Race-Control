@@ -11,6 +11,11 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/circuits")
+/**
+ * Manages circuit data and statistics.
+ * Handles fetching circuit details and aggregating race history for specific
+ * tracks.
+ */
 public class CircuitController {
 
        @Autowired
@@ -19,11 +24,16 @@ public class CircuitController {
        @Autowired
        private JdbcTemplate jdbcTemplate;
 
+       // Returns the full list of circuits available in the system
        @GetMapping
        public List<Circuit> getAllCircuits() {
               return circuitRepository.findAll();
        }
 
+       /**
+        * Looks up a specific circuit by ID.
+        * Returns 404 if the circuit doesn't exist.
+        */
        @GetMapping("/{id}")
        public ResponseEntity<Circuit> getCircuitById(@PathVariable int id) {
               return circuitRepository.findById(id)
@@ -32,7 +42,9 @@ public class CircuitController {
        }
 
        /**
-        * Circuit historical stats
+        * Aggregates historical statistics for a circuit.
+        * Includes total races held, most successful drivers/teams, and recent race
+        * results.
         */
        @GetMapping("/{id}/stats")
        public ResponseEntity<Map<String, Object>> getCircuitStats(@PathVariable int id) {
@@ -166,9 +178,7 @@ public class CircuitController {
               return ResponseEntity.ok(stats);
        }
 
-       /**
-        * All circuits with basic stats
-        */
+       // Fetches all circuits along with basic usage stats (e.g. total races held)
        @GetMapping("/with-stats")
        public List<Map<String, Object>> getCircuitsWithStats() {
               String sql = """

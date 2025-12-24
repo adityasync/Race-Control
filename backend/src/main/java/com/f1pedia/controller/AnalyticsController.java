@@ -12,6 +12,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/analytics")
+/**
+ * Unlocks deep insights into F1 data.
+ * Handles complex aggregations for qualifying, race pace, pit stops, and
+ * predictive metrics.
+ */
 public class AnalyticsController {
 
     @Autowired
@@ -26,19 +31,14 @@ public class AnalyticsController {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    /**
-     * Helper method to get the latest season from the database.
-     * Cached to avoid repeated queries within the same request context.
-     */
+    // Helper: fetches the most recent season (year) with data
     private Integer getLatestSeason() {
         String sql = "SELECT MAX(year) FROM races";
         Integer latest = jdbcTemplate.queryForObject(sql, Integer.class);
         return latest != null ? latest : java.time.Year.now().getValue();
     }
 
-    /**
-     * Resolve season parameter - uses latest season if not specified.
-     */
+    // Helper: defaults to the latest season if none is provided
     private int resolveSeason(Integer season) {
         return season != null ? season : getLatestSeason();
     }
@@ -91,9 +91,7 @@ public class AnalyticsController {
     // NEW F1-TECHNICAL ANALYTICS ENDPOINTS
     // ===========================================
 
-    /**
-     * Pole position to win conversion rate by driver
-     */
+    // Calculates how effectively drivers convert a Pole Position into a Win
     @GetMapping("/pole-to-win")
     public List<Map<String, Object>> getPoleToWinConversion() {
         String sql = """
@@ -112,9 +110,8 @@ public class AnalyticsController {
         return jdbcTemplate.queryForList(sql);
     }
 
-    /**
-     * Grid position vs finish position analysis (overtaking stats)
-     */
+    // Analyzes overtaking performance: average positions gained/lost from grid to
+    // finish
     @GetMapping("/grid-performance")
     public List<Map<String, Object>> getGridPerformance(@RequestParam(required = false) Integer season) {
         int targetSeason = resolveSeason(season);
@@ -137,9 +134,7 @@ public class AnalyticsController {
         return jdbcTemplate.queryForList(sql, targetSeason);
     }
 
-    /**
-     * Qualifying performance - Q1 to Q3 progression rates
-     */
+    // Tracks how often drivers make it through Q1 -> Q2 -> Q3
     @GetMapping("/qualifying-progression")
     public List<Map<String, Object>> getQualifyingProgression(@RequestParam(required = false) Integer season) {
         int targetSeason = resolveSeason(season);
@@ -163,9 +158,7 @@ public class AnalyticsController {
         return jdbcTemplate.queryForList(sql, targetSeason);
     }
 
-    /**
-     * Fastest lap analysis - who sets them and when
-     */
+    // Stats on Fastest Laps: who sets them, and do they convert to wins/podiums?
     @GetMapping("/fastest-laps")
     public List<Map<String, Object>> getFastestLapStats(@RequestParam(required = false) Integer season) {
         int targetSeason = resolveSeason(season);
@@ -185,9 +178,8 @@ public class AnalyticsController {
         return jdbcTemplate.queryForList(sql, targetSeason);
     }
 
-    /**
-     * Circuit-specific DNF rates
-     */
+    // Identifies circuits with high DNF (Did Not Finish) rates (reliability/danger
+    // analysis)
     @GetMapping("/circuit-reliability")
     public List<Map<String, Object>> getCircuitReliability() {
         String sql = """
@@ -208,9 +200,7 @@ public class AnalyticsController {
         return jdbcTemplate.queryForList(sql);
     }
 
-    /**
-     * Pit stop strategy analysis by circuit
-     */
+    // Breakdown of pit stop counts (1-stop vs 2-stop) by circuit
     @GetMapping("/pit-strategy")
     public List<Map<String, Object>> getPitStrategy(@RequestParam(required = false) Integer circuitId) {
         String sql = """
@@ -234,9 +224,7 @@ public class AnalyticsController {
         return jdbcTemplate.queryForList(sql);
     }
 
-    /**
-     * Constructor performance trends over seasons
-     */
+    // Long-term performance trends for Constructors over multiple years
     @GetMapping("/constructor-trends")
     public List<Map<String, Object>> getConstructorTrends() {
         String sql = """
@@ -260,9 +248,7 @@ public class AnalyticsController {
         return jdbcTemplate.queryForList(sql);
     }
 
-    /**
-     * Championship battle - points progression through season
-     */
+    // Championship points accumulation/progression race-by-race
     @GetMapping("/championship-battle")
     public List<Map<String, Object>> getChampionshipBattle(@RequestParam(required = false) Integer season) {
         int targetSeason = resolveSeason(season);
@@ -301,9 +287,7 @@ public class AnalyticsController {
         return jdbcTemplate.queryForList(sql, targetSeason);
     }
 
-    /**
-     * Teammate qualifying battle
-     */
+    // Tracks Qualifying head-to-head battles between teammates for a season
     @GetMapping("/teammate-battles")
     public List<Map<String, Object>> getTeammateBattles(@RequestParam(required = false) Integer season) {
         int targetSeason = resolveSeason(season);
@@ -334,9 +318,7 @@ public class AnalyticsController {
         return jdbcTemplate.queryForList(sql, targetSeason);
     }
 
-    /**
-     * Points per race efficiency
-     */
+    // Efficiency: Points scored per race
     @GetMapping("/points-efficiency")
     public List<Map<String, Object>> getPointsEfficiency(@RequestParam(required = false) Integer season) {
         int targetSeason = resolveSeason(season);
@@ -359,9 +341,7 @@ public class AnalyticsController {
         return jdbcTemplate.queryForList(sql, targetSeason);
     }
 
-    /**
-     * Pit Stop Team Efficiency - Avg duration by constructor
-     */
+    // Average pit stop duration for each constructor
     @GetMapping("/pit-stop-team-efficiency")
     public List<Map<String, Object>> getPitStopTeamEfficiency(@RequestParam(required = false) Integer season) {
         int targetSeason = resolveSeason(season);
@@ -382,9 +362,7 @@ public class AnalyticsController {
         return jdbcTemplate.queryForList(sql, targetSeason);
     }
 
-    /**
-     * Winning Strategy Analysis - Number of stops vs Win Rate
-     */
+    // Does stopping more/less actually correlate with winning?
     @GetMapping("/pit-strategy-stats")
     public List<Map<String, Object>> getWinningStrategyStats(@RequestParam(required = false) Integer season) {
         int targetSeason = resolveSeason(season);
@@ -417,10 +395,8 @@ public class AnalyticsController {
     // ML-INSPIRED ADVANCED ANALYTICS
     // ===========================================
 
-    /**
-     * Driver Form Analysis - Rolling performance over last N races
-     * Based on ML insight: rolling_wins is 70.7% predictive of race wins
-     */
+    // Driver Form: Rolling performance over last N races.
+    // (Note: rolling_wins is a strong predictor of future success)
     @GetMapping("/driver-form")
     public List<Map<String, Object>> getDriverForm(@RequestParam(defaultValue = "10") int lastNRaces) {
         String sql = """
@@ -456,9 +432,8 @@ public class AnalyticsController {
         return jdbcTemplate.queryForList(sql, lastNRaces, lastNRaces / 2);
     }
 
-    /**
-     * Grid to Win Conversion - How often does each grid position win?
-     */
+    // Grid to Win conversion: How often does each grid spot (P1, P2...) take the
+    // win?
     @GetMapping("/grid-win-conversion")
     public List<Map<String, Object>> getGridWinConversion() {
         String sql = """
@@ -476,9 +451,7 @@ public class AnalyticsController {
         return jdbcTemplate.queryForList(sql);
     }
 
-    /**
-     * Driver Circuit Specialization - Which circuits favor which drivers?
-     */
+    // Specialization: Which drivers excel at a specific track?
     @GetMapping("/driver-circuit-advantage")
     public List<Map<String, Object>> getDriverCircuitAdvantage(@RequestParam(required = false) Integer circuitId) {
         String baseSql = """
@@ -506,9 +479,7 @@ public class AnalyticsController {
                 " GROUP BY d.driver_id, d.forename, d.surname, ci.circuit_id, ci.name, ci.country HAVING COUNT(*) >= 3 ORDER BY wins DESC LIMIT 50");
     }
 
-    /**
-     * Constructor Momentum - Team performance trend over seasons
-     */
+    // Constructor Momentum: Are they improving or declining season over season?
     @GetMapping("/constructor-momentum")
     public List<Map<String, Object>> getConstructorMomentum() {
         String sql = """
@@ -529,9 +500,7 @@ public class AnalyticsController {
         return jdbcTemplate.queryForList(sql);
     }
 
-    /**
-     * Head-to-head historical battles between specific drivers
-     */
+    // Head-to-Head: Compare two drivers directly across shared races
     @GetMapping("/head-to-head")
     public List<Map<String, Object>> getHeadToHead(
             @RequestParam int driver1Id,
@@ -569,9 +538,8 @@ public class AnalyticsController {
         return jdbcTemplate.queryForList(sql, driver1Id, driver2Id, driver1Id, driver2Id);
     }
 
-    /**
-     * Lap Time Consistency - Standard Deviation of lap times (lower is better)
-     */
+    // Consistency: Low standard deviation in lap times indicates a consistent
+    // driver
     @GetMapping("/lap-consistency")
     public List<Map<String, Object>> getLapConsistency(@RequestParam(required = false) Integer season) {
         int targetSeason = resolveSeason(season);
@@ -595,9 +563,7 @@ public class AnalyticsController {
         return jdbcTemplate.queryForList(sql, targetSeason);
     }
 
-    /**
-     * Race Pace Gap - Average deficit to the winner's race pace
-     */
+    // Race Pace: Comparison of average lap times relative to the winner
     @GetMapping("/race-pace-gap")
     public List<Map<String, Object>> getRacePaceGap(@RequestParam(required = false) Integer season) {
         int targetSeason = resolveSeason(season);
@@ -634,9 +600,7 @@ public class AnalyticsController {
         return jdbcTemplate.queryForList(sql, targetSeason, targetSeason);
     }
 
-    /**
-     * Championship Momentum - Season stats with trend indicator
-     */
+    // Championship Swings: Tracks momentum changes (points gained/lost)
     @GetMapping("/championship-momentum")
     public List<Map<String, Object>> getChampionshipMomentum(@RequestParam(required = false) Integer season) {
         Integer targetSeason = resolveSeason(season);
@@ -662,9 +626,7 @@ public class AnalyticsController {
         return jdbcTemplate.queryForList(sql, targetSeason);
     }
 
-    /**
-     * Season Dominance - How much each driver is dominating the season
-     */
+    // Season Dominance: Which driver is dominating stats this year?
     @GetMapping("/season-dominance")
     public List<Map<String, Object>> getSeasonDominance(@RequestParam(required = false) Integer season) {
         Integer targetSeason = resolveSeason(season);

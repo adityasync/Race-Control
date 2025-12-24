@@ -1,12 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion'; // eslint-disable-line no-unused-vars
 import { getCircuitsWithStats, getCircuitStats } from '../services/api';
 
 import SmartLoader from '../components/SmartLoader';
 import CircuitMap from '../components/CircuitMap';
 import { ChevronRight, MapPin, Flag, Timer, Trophy } from 'lucide-react';
 
+/**
+ * Circuits Page
+ * Displays a list of all F1 circuits with a detailed preview.
+ * Allows users to select a circuit to view stats and map layout.
+ */
 export default function Circuits() {
     const [circuits, setCircuits] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -53,20 +58,6 @@ export default function Circuits() {
     };
 
     if (loading) return <SmartLoader message="Loading circuits..." />;
-
-    // Helper for Stats
-    const StatItem = ({ label, value, subtext, icon: Icon, color = "text-white" }) => (
-        <div className="flex items-center gap-3 bg-gray-900/50 p-3 rounded-lg border border-gray-800 backdrop-blur-sm overflow-hidden">
-            <div className={`shrink-0 p-2 rounded-full bg-gray-800 ${color}`}>
-                <Icon size={16} />
-            </div>
-            <div className="min-w-0 flex-1">
-                <div className="text-[10px] text-gray-500 uppercase font-mono tracking-wider truncate">{label}</div>
-                <div className="text-sm md:text-lg font-racing text-white truncate">{value}</div>
-                {subtext && <div className="text-[10px] text-gray-400 font-mono truncate" title={subtext}>{subtext}</div>}
-            </div>
-        </div>
-    );
 
     const lapRecord = stats?.fastestLaps?.[0];
 
@@ -231,3 +222,17 @@ export default function Circuits() {
         </div>
     );
 }
+
+// Helper Component for Stats
+const StatItem = ({ label, value, subtext, icon: IconComp, color = "text-white" }) => ( // eslint-disable-line no-unused-vars
+    <div className="flex items-center gap-3 bg-gray-900/50 p-3 rounded-lg border border-gray-800 backdrop-blur-sm overflow-hidden">
+        <div className={`shrink-0 p-2 rounded-full bg-gray-800 ${color}`}>
+            <IconComp size={16} />
+        </div>
+        <div className="min-w-0 flex-1">
+            <div className="text-[10px] text-gray-500 uppercase font-mono tracking-wider truncate">{label}</div>
+            <div className="text-sm md:text-lg font-racing text-white truncate">{value}</div>
+            {subtext && <div className="text-[10px] text-gray-400 font-mono truncate" title={subtext}>{subtext}</div>}
+        </div>
+    </div>
+);

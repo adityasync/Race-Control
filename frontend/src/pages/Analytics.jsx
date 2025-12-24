@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import {
     getDNFCauses, getPitStopEfficiency, getPoleToWin, getGridPerformance,
     getQualifyingProgression, getFastestLaps, getTeammateBattles, getPointsEfficiency,
@@ -9,15 +8,20 @@ import {
 } from '../services/api';
 import {
     PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis,
-    CartesianGrid, Legend, LineChart, Line, ScatterChart, Scatter, ZAxis, Area, AreaChart
+    CartesianGrid, Legend, LineChart, Line, Area, AreaChart
 } from 'recharts';
 
 import SmartLoader from '../components/SmartLoader';
-import { Loader2, TrendingUp, ChevronRight, Trophy, Timer, Zap, Target, Users, Flag, Swords, AlertCircle } from 'lucide-react';
+import { TrendingUp, ChevronRight, Trophy, Timer, Zap, Target, Users, Flag, Swords, AlertCircle } from 'lucide-react';
 import HeadToHead from './HeadToHead';
 
 const COLORS = ['#E10600', '#FF6B6B', '#FFD93D', '#6BCB77', '#4D96FF', '#9D4EDD', '#F72585', '#4CC9F0'];
 
+/**
+ * Analytics Page Component
+ * Displays comprehensive statistical analysis and visualizations for F1 data.
+ * Includes multiple tabs for different insights like Head-to-Head, Qualifying, Race Pace, etc.
+ */
 export default function Analytics() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -35,7 +39,7 @@ export default function Analytics() {
     const [pitStops, setPitStops] = useState([]);
     const [championshipData, setChampionshipData] = useState([]);
     const [constructorTrends, setConstructorTrends] = useState([]);
-    const [winDistribution, setWinDistribution] = useState([]);
+    // const [winDistribution, setWinDistribution] = useState([]); // Removed unused state
     const [constructorChampData, setConstructorChampData] = useState([]);
     const [gapToLeaderData, setGapToLeaderData] = useState([]);
     const [circuitReliability, setCircuitReliability] = useState([]);
@@ -45,10 +49,6 @@ export default function Analytics() {
     const [racePaceGap, setRacePaceGap] = useState([]);
     const [championshipMomentum, setChampionshipMomentum] = useState([]);
     const [seasonDominance, setSeasonDominance] = useState([]);
-
-    useEffect(() => {
-        loadData();
-    }, [selectedSeason]);
 
     const loadData = async () => {
         setLoading(true);
@@ -97,15 +97,9 @@ export default function Analytics() {
                 .slice(0, 5);
             setChampionshipData(topDrivers);
 
-            // Calculate Win Distribution
-            const wins = Object.entries(champByDriver)
-                .map(([driver, data]) => ({
-                    driver,
-                    value: data[data.length - 1]?.wins || 0
-                }))
-                .filter(d => d.value > 0)
-                .sort((a, b) => b.value - a.value);
-            setWinDistribution(wins);
+            // Win Distribution logic removed as state is unused
+
+            // Process Constructor Trends
 
             // Process Constructor Trends
             // Recharts need: [{year: 2014, Mercedes: 701, RedBull: 405...}, ...]
@@ -168,6 +162,10 @@ export default function Analytics() {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        loadData();
+    }, [selectedSeason]); // eslint-disable-next-line react-hooks/exhaustive-deps
 
     if (loading) return <SmartLoader message="Crunching numbers..." />;
 
@@ -504,7 +502,7 @@ export default function Analytics() {
                                                 <YAxis type="category" dataKey="driver" stroke="#666" tick={{ fill: '#fff', fontSize: 10 }} width={140} />
                                                 <Tooltip
                                                     contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #E10600' }}
-                                                    formatter={(v, name) => [
+                                                    formatter={(v) => [
                                                         v > 0 ? `+${v} pts/race` : `${v} pts/race`,
                                                         'Momentum'
                                                     ]}
@@ -513,7 +511,7 @@ export default function Analytics() {
                                                     dataKey="momentum"
                                                     name="Momentum"
                                                     radius={[0, 4, 4, 0]}
-                                                    label={({ x, y, width, height, value, index }) => {
+                                                    label={({ x, y, width, height, index }) => {
                                                         const trend = championshipMomentum[index]?.trend;
                                                         return (
                                                             <text
@@ -550,7 +548,7 @@ export default function Analytics() {
                                                 <YAxis stroke="#666" label={{ value: '%', angle: -90, position: 'insideLeft', fill: '#666' }} />
                                                 <Tooltip
                                                     contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #E10600' }}
-                                                    formatter={(v, name) => [`${v}%`, name]}
+                                                    formatter={(v) => [`${v}%`, 'Points Share']}
                                                 />
                                                 <Legend />
                                                 <Bar dataKey="points_share" fill="#FFD93D" name="Points Share %" radius={[4, 4, 0, 0]} />
@@ -716,7 +714,7 @@ export default function Analytics() {
                                                 cx="50%"
                                                 cy="50%"
                                                 outerRadius={100}
-                                                label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
+                                                label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
                                             >
                                                 {dnfData.map((_, idx) => (
                                                     <Cell key={idx} fill={COLORS[idx % COLORS.length]} />
@@ -756,7 +754,7 @@ export default function Analytics() {
                                             contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #E10600' }}
                                             formatter={v => [`${v}%`, 'DNF Rate']}
                                         />
-                                        <Bar dataKey="dnf_rate" fill="#FFD93D" name="DNF Rate" radius={[0, 4, 4, 0]} />
+                                        <Bar dataKey="dnf_rate" fill="#FFD93D" radius={[0, 4, 4, 0]} />
                                     </BarChart>
                                 </ResponsiveContainer>
                             </div>

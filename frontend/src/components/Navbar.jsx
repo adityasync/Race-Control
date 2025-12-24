@@ -1,19 +1,21 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
 import { Trophy, Timer, Users, TrendingUp, MapPin } from 'lucide-react';
 
-
+/**
+ * Navbar Component
+ * Responsive navigation bar with mobile menu support and scroll-aware styling.
+ */
 export default function Navbar() {
-    const location = useLocation();
-    const isHome = location.pathname === '/';
+    const { pathname } = useLocation();
+    const isHome = pathname === '/';
     const [scrolled, setScrolled] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
-    const { pathname } = useLocation(); // Replaces location
 
     // Close menu on route change
     useEffect(() => {
-        setIsOpen(false);
+        setTimeout(() => setIsOpen(false), 0);
     }, [pathname]);
 
     useEffect(() => {

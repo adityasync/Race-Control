@@ -24,20 +24,6 @@ export default function TeamAnalytics({ driverStats }) {
         .sort((a, b) => b.efficiency - a.efficiency)
         .slice(0, 10); // Top 10
 
-    const CustomTooltip = ({ active, payload, label }) => {
-        if (active && payload && payload.length) {
-            return (
-                <div className="bg-f1-black border border-f1-red p-3 rounded shadow-lg text-f1-offwhite">
-                    <p className="font-racing text-lg">{label}</p>
-                    <p className="text-sm font-mono text-f1-warmgray">
-                        {payload[0].name}: <span className="text-f1-red font-bold">{payload[0].value.toFixed(2)}</span>
-                    </p>
-                </div>
-            );
-        }
-        return null;
-    };
-
     return (
         <div className="bg-f1-charcoal/50 border-y border-f1-red/30 py-12 mb-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -142,3 +128,17 @@ export default function TeamAnalytics({ driverStats }) {
         </div>
     );
 }
+
+const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+        return (
+            <div className="bg-f1-black border border-f1-red p-3 rounded shadow-lg text-f1-offwhite">
+                <p className="font-racing text-lg">{label}</p>
+                <p className="text-sm font-mono text-f1-warmgray">
+                    {payload[0].name}: <span className="text-f1-red font-bold">{payload[0].value.toFixed(2)}</span>
+                </p>
+            </div>
+        );
+    }
+    return null;
+};

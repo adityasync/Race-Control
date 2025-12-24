@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
-import { Users, Trophy, MapPin, ArrowRight, Play, ChevronDown, BarChart3, Flag, Calendar, Zap, Award, Info } from 'lucide-react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'; // eslint-disable-line no-unused-vars
+import { Users, Trophy, MapPin, ArrowRight, Play, ChevronDown, BarChart3, Flag, Calendar, Zap, Award } from 'lucide-react';
 import { getLatestSeason } from '../services/api';
 
 const F1_FACTS = [
@@ -18,7 +18,11 @@ const F1_FACTS = [
     "The 2011 Canadian Grand Prix was the longest race in history, lasting 4 hours, 4 minutes, and 39 seconds."
 ];
 
-
+/**
+ * Home Page Component
+ * The landing page of the application featuring a cinematic intro,
+ * historical timeline, horizontal scroll showcase, and all-time records.
+ */
 export default function Home() {
     const [loaded, setLoaded] = useState(false);
     const containerRef = useRef(null);

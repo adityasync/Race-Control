@@ -11,6 +11,11 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/drivers")
+/**
+ * Manages driver profiles and statistics.
+ * Provides endpoints for retrieving driver details, career history, and
+ * aggregating comparative stats.
+ */
 public class DriversController {
 
     @Autowired
@@ -19,14 +24,16 @@ public class DriversController {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    // Fetch list of all drivers
     @GetMapping
     public List<Driver> getAllDrivers() {
         return driverRepository.findAll();
     }
 
     /**
-     * Get driver statistics for head-to-head comparisons.
-     * Returns aggregated stats for all drivers with significant race history.
+     * Aggregates key stats for each driver to power the head-to-head comparison
+     * tool.
+     * Only includes drivers with significant race history.
      */
     @GetMapping("/stats")
     public List<Map<String, Object>> getDriverStats() {
@@ -56,6 +63,7 @@ public class DriversController {
         return jdbcTemplate.queryForList(sql);
     }
 
+    // Look up a driver profile by ID
     @GetMapping("/{id}")
     public ResponseEntity<Driver> getDriverById(@PathVariable int id) {
         return driverRepository.findById(id)
@@ -64,7 +72,9 @@ public class DriversController {
     }
 
     /**
-     * Full driver career stats
+     * Compiles a complete history of a driver's career.
+     * Includes teams driven for, season-by-season breakdowns, and best race
+     * results.
      */
     @GetMapping("/{id}/career")
     public ResponseEntity<Map<String, Object>> getDriverCareer(@PathVariable int id) {
@@ -168,9 +178,7 @@ public class DriversController {
         return ResponseEntity.ok(career);
     }
 
-    /**
-     * Driver championship history
-     */
+    // Returns a history of championship standings for the driver
     @GetMapping("/{id}/championships")
     public List<Map<String, Object>> getDriverChampionships(@PathVariable int id) {
         String sql = """
@@ -186,9 +194,7 @@ public class DriversController {
         return jdbcTemplate.queryForList(sql, id);
     }
 
-    /**
-     * Driver vs circuit performance
-     */
+    // Analyzes how the driver performs on specific circuits
     @GetMapping("/{id}/circuits")
     public List<Map<String, Object>> getDriverCircuitPerformance(@PathVariable int id) {
         String sql = """
@@ -210,7 +216,8 @@ public class DriversController {
     }
 
     /**
-     * Driver evolution over years
+     * Tracks the driver's year-over-year improvement in grid/finish positions.
+     * Also calculates average points per race.
      */
     @GetMapping("/{id}/evolution")
     public List<Map<String, Object>> getDriverEvolution(@PathVariable int id) {
@@ -230,9 +237,7 @@ public class DriversController {
         return jdbcTemplate.queryForList(sql, id);
     }
 
-    /**
-     * Driver finishing status analysis (DNF breakdown)
-     */
+    // Breakdown of race outcomes (finished, accident, mechanical failure, etc.)
     @GetMapping("/{id}/status")
     public List<Map<String, Object>> getDriverFinishingStatus(@PathVariable int id) {
         String sql = """
@@ -254,7 +259,8 @@ public class DriversController {
     }
 
     /**
-     * Teammate battles (Head to Head per season)
+     * Compares the driver against teammates for every season.
+     * Includes race/qualifying head-to-head counts.
      */
     @GetMapping("/{id}/teammates")
     public List<Map<String, Object>> getTeammateBattles(@PathVariable int id) {
@@ -278,9 +284,7 @@ public class DriversController {
         return jdbcTemplate.queryForList(sql, id);
     }
 
-    /**
-     * Cumulative career trajectory
-     */
+    // Cumulative points/races over time to visualize career growth
     @GetMapping("/{id}/trajectory")
     public List<Map<String, Object>> getCareerTrajectory(@PathVariable int id) {
         String sql = """
@@ -300,9 +304,7 @@ public class DriversController {
         return jdbcTemplate.queryForList(sql, id);
     }
 
-    /**
-     * Finishing position distribution (Histogram)
-     */
+    // Histogram data showing frequency of each finishing position (P1, P2, P3...)
     @GetMapping("/{id}/positions")
     public List<Map<String, Object>> getFinishingPositions(@PathVariable int id) {
         String sql = """

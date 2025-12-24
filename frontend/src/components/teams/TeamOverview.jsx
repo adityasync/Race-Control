@@ -1,9 +1,8 @@
 import { Trophy, Flag, Calendar, Medal, Percent, Activity, ArrowRight, Timer, Zap, PieChart as PieChartIcon, Globe, AlertTriangle, Grid } from 'lucide-react';
 import { LineChart, Line, ResponsiveContainer, Tooltip, PieChart, Pie, Cell, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 
-export default function TeamOverview({ team, driverStats, seasons, dashboardStats, statusStats, geoStats, heatmapStats, setActiveTab }) {
+export default function TeamOverview({ driverStats, seasons, dashboardStats, statusStats, geoStats, heatmapStats, setActiveTab }) {
     // Calculations
-    const totalPoints = driverStats.reduce((sum, d) => sum + (d.totalPoints || 0), 0);
     const totalWins = driverStats.reduce((sum, d) => sum + (d.wins || 0), 0);
     const totalPodiums = driverStats.reduce((sum, d) => sum + (d.podiums || 0), 0);
     const totalRaces = seasons.reduce((sum, s) => sum + (s.races || 0), 0);

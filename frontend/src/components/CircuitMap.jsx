@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
 import geoData from '../data/f1-circuits.json';
 
-export default function CircuitMap({ circuitId, name, location, country, className = "" }) {
+export default function CircuitMap({ name, location, className = "" }) {
     // 1. Find the matching feature
     const feature = useMemo(() => {
         if (!geoData || !geoData.features) return null;
@@ -12,7 +12,6 @@ export default function CircuitMap({ circuitId, name, location, country, classNa
         const norm = (str) => str?.toLowerCase().replace(/[^a-z0-9]/g, '');
         const targetName = norm(name);
         const targetLocation = norm(location);
-        const targetCountry = norm(country);
 
         return geoData.features.find(f => {
             const fName = norm(f.properties.Name);
@@ -21,7 +20,7 @@ export default function CircuitMap({ circuitId, name, location, country, classNa
             return fName && targetName && (fName.includes(targetName) || targetName.includes(fName)) ||
                 fLocation && targetLocation && fLocation === targetLocation;
         });
-    }, [name, location, country]);
+    }, [name, location]);
 
     // 2. Convert coordinates to SVG path
     const pathData = useMemo(() => {

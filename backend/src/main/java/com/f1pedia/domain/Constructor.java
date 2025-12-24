@@ -6,6 +6,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+/**
+ * Entity representing a Formula 1 constructor (team).
+ * Maps to the 'constructors' table.
+ */
 @Data
 @Entity
 @Table(name = "constructors")

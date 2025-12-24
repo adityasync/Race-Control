@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getConstructorById, getConstructorDriverStats, getConstructorSeasons, getConstructorCircuits, getConstructorDashboardStats, getConstructorStatusBreakdown, getConstructorPointsHeatmap, getConstructorGeoPerformance } from '../services/api';
-import { Trophy, Loader2, ArrowLeft, Globe, Flag, Calendar } from 'lucide-react';
+import { Trophy, ArrowLeft, Globe, Flag, Calendar } from 'lucide-react';
 import { getDriverPhotoOrPlaceholder } from '../utils/driverPhotos';
 import TeamAnalytics from '../components/teams/TeamAnalytics';
 import TeamSeasons from '../components/teams/TeamSeasons';
@@ -9,10 +9,15 @@ import TeamCircuits from '../components/teams/TeamCircuits';
 import TeamOverview from '../components/teams/TeamOverview';
 import SmartLoader from '../components/SmartLoader';
 
+/**
+ * TeamDetails Page
+ * Displays comprehensive details for a specific constructor, including
+ * overview, season history, circuit performance, and driver roster.
+ */
 export default function TeamDetails() {
     const { id, "*": tabParam } = useParams();
     const navigate = useNavigate();
-    const location = useLocation();
+    // const location = useLocation(); // Unused
 
     const [team, setTeam] = useState(null);
     const [driverStats, setDriverStats] = useState([]);

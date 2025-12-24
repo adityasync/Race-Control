@@ -8,48 +8,32 @@ const api = axios.create({
     timeout: 30000, // 30 second timeout
 });
 
-// Response interceptor for global error handling
+// Global response interceptor for unified error handling
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-        // Create user-friendly error messages
+        // Create user-friendly error messages based on status code
         let errorMessage = 'An unexpected error occurred';
 
         if (error.response) {
-            // Server responded with error status
             switch (error.response.status) {
-                case 400:
-                    errorMessage = 'Invalid request. Please check your input.';
-                    break;
-                case 401:
-                    errorMessage = 'Session expired. Please refresh the page.';
-                    break;
-                case 403:
-                    errorMessage = 'Access denied.';
-                    break;
-                case 404:
-                    errorMessage = 'The requested data was not found.';
-                    break;
-                case 500:
-                    errorMessage = 'Server error. Please try again later.';
-                    break;
-                case 503:
-                    errorMessage = 'Service temporarily unavailable. Please try again.';
-                    break;
-                default:
-                    errorMessage = `Server error (${error.response.status})`;
+                case 400: errorMessage = 'Invalid request. Please check your input.'; break;
+                case 401: errorMessage = 'Session expired. Please refresh the page.'; break;
+                case 403: errorMessage = 'Access denied.'; break;
+                case 404: errorMessage = 'The requested data was not found.'; break;
+                case 500: errorMessage = 'Server error. Please try again later.'; break;
+                case 503: errorMessage = 'Service temporarily unavailable.'; break;
+                default: errorMessage = `Server error (${error.response.status})`;
             }
         } else if (error.request) {
-            // Request made but no response received
             errorMessage = 'Unable to connect to server. Please check your connection.';
         } else if (error.code === 'ECONNABORTED') {
             errorMessage = 'Request timed out. Please try again.';
         }
 
-        // Attach user-friendly message to error object
         error.userMessage = errorMessage;
 
-        // Log for debugging (can be sent to monitoring service)
+        // Debug log
         console.error('[API Error]', {
             url: error.config?.url,
             status: error.response?.status,
@@ -74,6 +58,7 @@ export const getLatestSeason = async () => {
     }
 };
 
+// Core Reference Data
 export const getDrivers = () => api.get('/drivers');
 export const getConstructors = (search) => api.get('/constructors', { params: { search } });
 export const getConstructorsWithStats = () => api.get('/constructors/stats');
@@ -83,6 +68,7 @@ export const getConstructorDriverStats = (id) => api.get(`/constructors/${id}/dr
 export const getConstructorSeasons = (id) => api.get(`/constructors/${id}/seasons`);
 export const getConstructorCircuits = (id) => api.get(`/constructors/${id}/circuits`);
 
+// Constructor Dashboard Visualizations
 export const getConstructorDashboardStats = (id) => api.get(`/constructors/${id}/dashboard-stats`);
 export const getConstructorStatusBreakdown = (id) => api.get(`/constructors/${id}/status-breakdown`);
 export const getConstructorPointsHeatmap = (id) => api.get(`/constructors/${id}/points-heatmap`);
@@ -93,13 +79,12 @@ export const getRaces = (year) => {
     return api.get('/races');
 };
 
-// Analytics endpoints (Live Spring Boot Backend)
+// Analytics & Insights
 export const getDNFCauses = () => api.get('/analytics/dnf-causes');
 export const getPoleToWin = () => api.get('/analytics/pole-to-win');
 export const getHeadToHeadLive = (d1, d2) => api.get(`/analytics/head-to-head?driver1Id=${d1}&driver2Id=${d2}`);
-// Driver stats for HeadToHead comparison - now using backend endpoint
 export const getDriverStats = () => api.get('/drivers/stats');
-export const getHeadToHead = () => api.get('/drivers/stats'); // Replaced static JSON with backend API
+export const getHeadToHead = () => api.get('/drivers/stats');
 
 export const getPitStopEfficiency = (season) => api.get(`/analytics/pit-stops?season=${season}`);
 export const getPitStopTeamEfficiency = (season) => api.get(`/analytics/pit-stop-team-efficiency?season=${season}`);
@@ -119,7 +104,7 @@ export const getChampionshipMomentum = (season) => api.get(`/analytics/champions
 export const getSeasonDominance = (season) => api.get(`/analytics/season-dominance?season=${season}`);
 
 
-// Driver Profile endpoints
+// Driver Profile & Detailed History
 export const getDriverById = (id) => api.get(`/drivers/${id}`);
 export const getDriverCareer = (id) => api.get(`/drivers/${id}/career`);
 export const getDriverChampionships = (id) => api.get(`/drivers/${id}/championships`);
@@ -130,7 +115,7 @@ export const getDriverTeammateBattles = (id) => api.get(`/drivers/${id}/teammate
 export const getDriverCareerTrajectory = (id) => api.get(`/drivers/${id}/trajectory`);
 export const getDriverFinishingPositions = (id) => api.get(`/drivers/${id}/positions`);
 
-// Circuit endpoints
+// Circuits
 export const getCircuits = () => api.get('/circuits');
 export const getCircuitsWithStats = () => api.get('/circuits/with-stats');
 export const getCircuitById = (id) => api.get(`/circuits/${id}`);

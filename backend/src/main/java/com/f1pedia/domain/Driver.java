@@ -7,6 +7,10 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import java.time.LocalDate;
 
+/**
+ * Entity representing a Formula 1 driver.
+ * Maps to the 'drivers' table.
+ */
 @Data
 @Entity
 @Table(name = "drivers")

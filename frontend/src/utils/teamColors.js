@@ -1,3 +1,10 @@
+/**
+ * Get the standardized color for a Constructor/Team.
+ * Normalizes input strings to handle variations (e.g. "Red Bull", "red_bull").
+ *
+ * @param {string} constructorRef
+ * @returns {string} Hex color code
+ */
 export const getTeamColor = (constructorRef) => {
     const colors = {
         // Modern Era
@@ -61,15 +68,14 @@ export const getTeamColor = (constructorRef) => {
     return colors[key] || colors[constructorRef] || '#333333'; // Default to dark gray
 };
 
+/**
+ * Determines an appropriate text color (black/white) for a given background hex color.
+ *
+ * @param {string} bgColor
+ * @returns {string} '#000000' or '#FFFFFF'
+ */
 export const getTeamTextColor = (bgColor) => {
-    // Simple logic: if bg is light, return black, else white
-    // This is a rough approximation.
-    const darkBackgrounds = [
-        '#333333', '#1C2754', '#102F23', '#225941', '#6E0000',
-        '#004225', '#00009C', '#0055A5', '#2F4F4F', '#F91536', '#3671C6'
-    ];
-
-    // Convert hex to logic if needed, but for now simple override
+    // Simple logic: if bg is known to be light, return black, else white
     if (['#FFFFFF', '#E8E8E8', '#FFF500', '#F5D304', '#6692FF', '#52E252', '#6CD3BF'].includes(bgColor)) {
         return '#000000';
     }

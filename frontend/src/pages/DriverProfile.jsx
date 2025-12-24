@@ -7,6 +7,7 @@ import { getDriverPhotoOrPlaceholder } from '../utils/driverPhotos';
 
 import SmartLoader from '../components/SmartLoader';
 
+// Detailed analytics and career stats for a single driver
 export default function DriverProfile() {
     const { id } = useParams();
     const [career, setCareer] = useState(null);
@@ -23,6 +24,7 @@ export default function DriverProfile() {
         const fetchData = async () => {
             setLoading(true);
             try {
+                // Fetch all data in parallel for speed
                 const [careerRes, circuitsRes, evolutionRes, statusRes, teammatesRes, trajectoryRes, positionsRes] = await Promise.all([
                     getDriverCareer(id),
                     getDriverCircuits(id),
@@ -91,7 +93,7 @@ export default function DriverProfile() {
                             </div>
                         </div>
 
-                        {/* Career Stats */}
+                        {/* Career Stats Summary */}
                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 text-center">
                             <StatBadge value={career.races} label="Races" />
                             <StatBadge value={career.wins} label="Wins" color="text-yellow-500" />

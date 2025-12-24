@@ -4,6 +4,10 @@ import { getCircuitStats } from '../services/api';
 import CircuitMap from '../components/CircuitMap';
 import { Loader2, ChevronRight, Trophy, MapPin, ArrowLeft, Flag, Timer, Calendar } from 'lucide-react';
 
+/**
+ * CircuitDetails Page
+ * Displays detailed statistics, map, and historical data for a specific circuit.
+ */
 export default function CircuitDetails() {
     const { id } = useParams();
     const [stats, setStats] = useState(null);

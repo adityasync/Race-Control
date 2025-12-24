@@ -2,6 +2,10 @@ package com.f1pedia.domain;
 
 import jakarta.persistence.*;
 
+/**
+ * Entity representing a Formula 1 circuit/track.
+ * Maps to the 'circuits' table.
+ */
 @Entity
 @Table(name = "circuits")
 public class Circuit {
