@@ -125,23 +125,23 @@ const driverPhotoMap = {
     'Tambay': 'patrick_tambay_8bit.png',
     'Trintignant': 'maurice_trintignant_8bit.png',
     'Vukovich': 'bill_vukovich_8bit.png',
-    'Alesi': 'jean_alesi_8bit.png',
+    'Jean Alesi': 'jean_alesi_8bit.png',
     'Baghetti': 'giancarlo_baghetti_8bit.png',
-    'Bandini': 'lorenzo_bandini_8bit.png',
+    'Lorenzo Bandini': 'lorenzo_bandini_8bit.png',
     'Beltoise': 'jean_pierre_beltoise_8bit.png',
     'Bonnier': 'jo_bonnier_8bit.png',
-    'Brambilla': 'vittorio_brambilla_8bit.png',
+    'Vittorio Brambilla': 'vittorio_brambilla_8bit.png',
     'Bryan': 'jimmy_bryan_8bit.png',
-    'Cevert': 'francois_cevert_8bit.png',
+    'Francois Cevert': 'francois_cevert_8bit.png',
     'Fagioli': 'luigi_fagioli_8bit.png',
     'Flaherty': 'pat_flaherty_8bit.png',
-    'Gasly': 'pierre_gasly_8bit.png',
+    'Pierre Gasly': 'pierre_gasly_8bit.png',
     'Gethin': 'peter_gethin_8bit.png',
     'Ginther': 'richie_ginther_8bit.png',
     'Hanks': 'sam_hanks_8bit.png',
     'Ireland': 'innes_ireland_8bit.png',
-    'Kovalainen': 'heikki_kovalainen_8bit.png',
-    'Kubica': 'robert_kubica_8bit.png',
+    'Heikki Kovalainen': 'heikki_kovalainen_8bit.png',
+    'Robert Kubica': 'robert_kubica_8bit.png',
     'Maldonado': 'pastor_maldonado_8bit.png',
     'Mass': 'jochen_mass_8bit.png',
     'Musso': 'luigi_musso_8bit.png',
@@ -253,9 +253,8 @@ const driverPhotoMap = {
     'David Brabham': 'david_brabham_8bit.png',
     'Gary Brabham': 'gary_brabham_8bit.png',
     'Brack': 'bill_brack_8bit.png',
-    'Brambilla': 'ernesto_brambilla_8bit.png',
-    'Branca': 'toni_branca_8bit.png',
-    'Branca': 'toni_branca_8bit.png',
+    'Ernesto Brambilla': 'ernesto_brambilla_8bit.png',
+    'Toni Branca': 'toni_branca_8bit.png',
     'Brancatelli': 'gianfranco_brancatelli_8bit.png',
     // Batch 23 (Partial)
     'Brandon': 'eric_brandon_8bit.png',
@@ -269,7 +268,7 @@ const driverPhotoMap = {
     // Batch 24
     'Alan Brown': 'alan_brown_8bit.png',
     'Brudes': 'adolf_brudes_8bit.png',
-    'Brundle': 'martin_brundle_8bit.png',
+    'Martin Brundle': 'martin_brundle_8bit.png',
     'Bruni': 'gianmaria_bruni_8bit.png',
     'Bucci': 'clemar_bucci_8bit.png',
     'Bucknum': 'ronnie_bucknum_8bit.png',
@@ -361,7 +360,7 @@ const driverPhotoMap = {
     'de Filippis': 'maria_de_filippis_8bit.png',
     'de Graffenried': 'toulo_de_graffenried_8bit.png',
     'de Klerk': 'peter_de_klerk_8bit.png',
-    'de la Rosa': 'pedro_de_la_rosa_8bit.png',
+    'Pedro de la Rosa': 'pedro_de_la_rosa_8bit.png',
     'Délétraz': 'jean_denis_deletraz_8bit.png',
     'de Portago': 'alfonso_de_portago_8bit.png',
     'de Riu': 'giovanni_de_riu_8bit.png',
@@ -461,17 +460,33 @@ const driverPhotoMap = {
     'Gardner': 'frank_gardner_8bit.png',
     'Garrett': 'billy_garrett_8bit.png',
     'Gartner': 'jo_gartner_8bit.png',
+    'Gaze': 'tony_gaze_8bit.png',
+    'Gendebien': 'olivier_gendebien_8bit.png',
+    'Gené': 'marc_gene_8bit.png',
+    'George': 'elmer_george_8bit.png',
+    // Batch 46
+    'Gerard': 'bob_gerard_8bit.png',
+    'Gerini': 'gerino_gerini_8bit.png',
+    'Ghinzani': 'piercarlo_ghinzani_8bit.png',
+    'Giacomelli': 'bruno_giacomelli_8bit.png',
+    'Giovinazzi': 'antonio_giovinazzi_8bit.png',
 };
 
+/**
+ * Retrieves the path to an 8-bit driver portrait.
+ * Check for full name match first, then surname.
+ *
+ * @param {string} surname
+ * @param {string} forename
+ * @returns {string|null} Path to image or null
+ */
 export function getDriverPhoto(surname, forename) {
-    // Check for full name match first (e.g. "Jos Verstappen")
     if (forename) {
         const fullName = `${forename} ${surname}`;
         // Try exact full name
         if (driverPhotoMap[fullName]) {
             return `/assets/${driverPhotoMap[fullName]}`;
         }
-        // Try simple concatenation just in case (e.g. "Graham Hill" is in map, but passed as separate)
     }
 
     const filename = driverPhotoMap[surname];
@@ -481,6 +496,13 @@ export function getDriverPhoto(surname, forename) {
     return null;
 }
 
+/**
+ * Returns a driver photo or a generated UI Avatar placeholder if none exists.
+ *
+ * @param {string} forename
+ * @param {string} surname
+ * @returns {string} Image URL
+ */
 export function getDriverPhotoOrPlaceholder(forename, surname) {
     const photo = getDriverPhoto(surname, forename);
     if (photo) return photo;
