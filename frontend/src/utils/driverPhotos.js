@@ -502,6 +502,27 @@ const driverPhotoMap = {
     'Gutiérrez': 'esteban_gutierrez_8bit.png',
     // Batch 50
     'Hahne': 'hubert_hahne_8bit.png',
+    'Hailwood': 'mike_hailwood_8bit.png',
+    'Häkkinen': 'mika_hakkinen_8bit.png',
+    'Halford': 'bruce_halford_8bit.png',
+    'Hall': 'jim_hall_8bit.png',
+    'Hamilton': 'lewis_hamilton_8bit.png',
+    'Hamilton': 'duncan_hamilton_8bit.png',
+    'Hampshire': 'david_hampshire_8bit.png',
+    // Batch 51
+    'Hansgen': 'walt_hansgen_8bit.png',
+    'Harris': 'mike_harris_8bit.png',
+    'Harrison': 'cuth_harrison_8bit.png',
+    'Hart': 'brian_hart_8bit.png',
+    'Hartley': 'gene_hartley_8bit.png',
+    'Hartley': 'brendon_hartley_8bit.png',
+    'Haryanto': 'rio_haryanto_8bit.png',
+    'Hasemi': 'masahiro_hasemi_8bit.png',
+    // Batch 52
+    'Hattori': 'naoki_hattori_8bit.png',
+    'Hawkins': 'paul_hawkins_8bit.png',
+    'Hawthorn': 'mike_hawthorn_8bit.png',
+    'Hayje': 'boy_hayje_8bit.png',
 };
 
 /**
