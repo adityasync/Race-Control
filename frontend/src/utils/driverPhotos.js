@@ -523,6 +523,25 @@ const driverPhotoMap = {
     'Hawkins': 'paul_hawkins_8bit.png',
     'Hawthorn': 'mike_hawthorn_8bit.png',
     'Hayje': 'boy_hayje_8bit.png',
+    'Heeks': 'willi_heeks_8bit.png',
+    'Heidfeld': 'nick_heidfeld_8bit.png',
+    'Helfrich': 'theo_helfrich_8bit.png',
+    'Hellings': 'mack_hellings_8bit.png',
+    // Batch 53
+    'Henton': 'brian_henton_8bit.png',
+    'Herbert': 'johnny_herbert_8bit.png',
+    'Herman': 'al_herman_8bit.png',
+    'Herrmann': 'hans_herrmann_8bit.png',
+    'Hesnault': 'francois_hesnault_8bit.png',
+    'Heyer': 'hans_heyer_8bit.png',
+    'Hill': 'damon_hill_8bit.png',
+    'Hill': 'graham_hill_8bit.png',
+    // Batch 54
+    'Hirt': 'peter_hirt_8bit.png',
+    'Hobbs': 'david_hobbs_8bit.png',
+    'Hocking': 'gary_hocking_8bit.png',
+    'Hoffmann': 'ingo_hoffmann_8bit.png',
+    'Holland': 'bill_holland_8bit.png',
 };
 
 /**
