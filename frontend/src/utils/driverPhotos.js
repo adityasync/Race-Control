@@ -553,6 +553,18 @@ const driverPhotoMap = {
     'Ide': 'yuji_ide_8bit.png',
     'Irwin': 'chris_irwin_8bit.png',
     'Jackson': 'jimmy_jackson_8bit.png',
+    'Iglesias': 'jesus_iglesias_8bit.png',
+    'Inoue': 'taki_inoue_8bit.png',
+    'James': 'joe_james_8bit.png',
+    'James': 'john_james_8bit.png',
+    'Jarier': 'jean_pierre_jarier_8bit.png',
+    'Järvilehto': 'jyrki_jarvilehto_8bit.png',
+    'Lehto': 'jyrki_jarvilehto_8bit.png',
+    // Batch 56
+    'Jean': 'max_jean_8bit.png',
+    'Johansson': 'stefan_johansson_8bit.png',
+    'Johnson': 'leslie_johnson_8bit.png',
+    'E. Johnson': 'eddie_johnson_8bit.png',
 };
 
 /**
