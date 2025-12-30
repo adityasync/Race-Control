@@ -565,6 +565,21 @@ const driverPhotoMap = {
     'Johansson': 'stefan_johansson_8bit.png',
     'Johnson': 'leslie_johnson_8bit.png',
     'E. Johnson': 'eddie_johnson_8bit.png',
+    'Johnstone': 'bruce_johnstone_8bit.png',
+    'Jones': 'tom_jones_8bit.png',
+    'Jover': 'juan_jover_8bit.png',
+    // Batch 57
+    'Karch': 'oswald_karch_8bit.png',
+    'Karthikeyan': 'narain_karthikeyan_8bit.png',
+    'Katayama': 'ukyo_katayama_8bit.png',
+    'Kavanagh': 'ken_kavanagh_8bit.png',
+    'Keegan': 'rupert_keegan_8bit.png',
+    'Keizan': 'eddie_keizan_8bit.png',
+    'Keller': 'al_keller_8bit.png',
+    'Kelly': 'joe_kelly_8bit.png',
+    'Kennedy': 'dave_kennedy_8bit.png',
+    'Kessel': 'loris_kessel_8bit.png',
+    'Kessler': 'bruce_kessler_8bit.png',
 };
 
 /**
