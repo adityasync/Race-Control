@@ -496,21 +496,21 @@ Style: **Face only (no helmet)**, Trading Card, 8-bit.
 | **Dave Kennedy** | 0 | [x] | `assets/dave_kennedy_8bit.png` |
 | **Loris Kessel** | 0 | [x] | `assets/loris_kessel_8bit.png` |
 | **Bruce Kessler** | 0 | [x] | `assets/bruce_kessler_8bit.png` |
-| **Nicolas Kiesa** | 0 | [ ] |  |
-| **Leo Kinnunen** | 0 | [ ] |  |
-| **Danny Kladis** | 0 | [ ] |  |
-| **Hans Klenk** | 0 | [ ] |  |
-| **Christian Klien** | 0 | [ ] |  |
-| **Karl Kling** | 0 | [ ] |  |
-| **Ernst Klodwig** | 0 | [ ] |  |
-| **Kamui Kobayashi** | 0 | [ ] |  |
-| **Helmuth Koinigg** | 0 | [ ] |  |
-| **Mikko Kozarowitzky** | 0 | [ ] |  |
-| **Rudolf Krause** | 0 | [ ] |  |
-| **Kurt Kuhnke** | 0 | [ ] |  |
-| **Daniil Kvyat** | 0 | [ ] |  |
-| **Robert La Caze** | 0 | [ ] |  |
-| **Franck Lagorce** | 0 | [ ] |  |
+| **Nicolas Kiesa** | 0 | [x] | `assets/nicolas_kiesa_8bit.png` |
+| **Leo Kinnunen** | 0 | [x] | `assets/leo_kinnunen_8bit.png` |
+| **Danny Kladis** | 0 | [x] | `assets/danny_kladis_8bit.png` |
+| **Hans Klenk** | 0 | [x] | `assets/hans_klenk_8bit.png` |
+| **Christian Klien** | 0 | [x] | `assets/christian_klien_8bit.png` |
+| **Karl Kling** | 0 | [x] | `assets/karl_kling_8bit.png` |
+| **Ernst Klodwig** | 0 | [x] | `assets/ernst_klodwig_8bit.png` |
+| **Kamui Kobayashi** | 0 | [x] | `assets/kamui_kobayashi_8bit.png` |
+| **Helmuth Koinigg** | 0 | [x] | `assets/helmuth_koinigg_8bit.png` |
+| **Mikko Kozarowitzky** | 0 | [x] | `assets/mikko_kozarowitzky_8bit.png` |
+| **Rudolf Krause** | 0 | [x] | `assets/rudolf_krause_8bit.png` |
+| **Kurt Kuhnke** | 0 | [x] | `assets/kurt_kuhnke_8bit.png` |
+| **Daniil Kvyat** | 0 | [x] | `assets/daniil_kvyat_8bit.png` |
+| **Robert La Caze** | 0 | [x] | `assets/robert_la_caze_8bit.png` |
+| **Franck Lagorce** | 0 | [x] | `assets/franck_lagorce_8bit.png` |
 | **Jan Lammers** | 0 | [ ] |  |
 | **Pedro Lamy** | 0 | [ ] |  |
 | **Chico Landi** | 0 | [ ] |  |
