@@ -597,6 +597,28 @@ const driverPhotoMap = {
     'Kvyat': 'daniil_kvyat_8bit.png',
     'La Caze': 'robert_la_caze_8bit.png',
     'Lagorce': 'franck_lagorce_8bit.png',
+    'Lammers': 'jan_lammers_8bit.png',
+    'Lamy': 'pedro_lamy_8bit.png',
+    'Landi': 'chico_landi_8bit.png',
+    'Lang': 'hermann_lang_8bit.png',
+    'Langes': 'claudio_langes_8bit.png',
+    'Larini': 'nicola_larini_8bit.png',
+    'Larrauri': 'oscar_larrauri_8bit.png',
+    'Larreta': 'alberto_rodriguez_larreta_8bit.png',
+    'Larrousse': 'gerard_larrousse_8bit.png',
+    'Larson': 'jud_larson_8bit.png',
+    'Latifi': 'nicholas_latifi_8bit.png',
+    'Laurent': 'roger_laurent_8bit.png',
+    'Lavaggi': 'giovanni_lavaggi_8bit.png',
+    'Lawrence': 'chris_lawrence_8bit.png',
+    'Lawson': 'liam_lawson_8bit.png',
+    'Leclere': 'michel_leclere_8bit.png',
+    'Lederle': 'neville_lederle_8bit.png',
+    'Lees': 'geoff_lees_8bit.png',
+    'Legat': 'arthur_legat_8bit.png',
+    'Leoni': 'lamberto_leoni_8bit.png',
+    'Leston': 'les_leston_8bit.png',
+
 };
 
 /**
