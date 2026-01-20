@@ -638,6 +638,50 @@ const driverPhotoMap = {
     'Lunger': 'brett_lunger_8bit.png',
     'Lunger_Boy': 'boy_lunger_8bit.png',
 
+    'MacDowel': 'mike_macdowel_8bit.png',
+    'MacKay-Fraser': 'herbert_mackay_fraser_8bit.png',
+    'Mackey': 'bill_mackey_8bit.png',
+    'Macklin': 'lance_macklin_8bit.png',
+    'Magee': 'damien_magee_8bit.png',
+
+    'Maggs': 'tony_maggs_8bit.png',
+    'Magill': 'mike_magill_8bit.png',
+    'Maglioli': 'umberto_maglioli_8bit.png',
+
+    'Magnussen': 'jan_magnussen_8bit.png',
+    'Magnussen_Kevin': 'kevin_magnussen_8bit.png',
+
+    'Mairesse': 'guy_mairesse_8bit.png',
+    'Mairesse_Willy': 'willy_mairesse_8bit.png',
+    'Mantovani': 'sergio_mantovani_8bit.png',
+    'Mantz': 'johnny_mantz_8bit.png',
+    'Manzon': 'robert_manzon_8bit.png',
+
+    'Marimón': 'onofre_marimon_8bit.png',
+    'Marko': 'helmut_marko_8bit.png',
+    'Marques': 'tarso_marques_8bit.png',
+
+    'Marr': 'leslie_marr_8bit.png',
+    'Marsh': 'tony_marsh_8bit.png',
+    'Martin': 'eugene_martin_8bit.png',
+    'Martini': 'pierluigi_martini_8bit.png',
+    'May': 'michael_may_8bit.png',
+
+    'Mayer': 'timmy_mayer_8bit.png',
+    'Mazepin': 'nikita_mazepin_8bit.png',
+    'Mazet': 'francois_mazet_8bit.png',
+    'Mazzacane': 'gaston_mazzacane_8bit.png',
+    'McAlpine': 'kenneth_mcalpine_8bit.png',
+
+    'McCarthy': 'perry_mccarthy_8bit.png',
+    'McCoy': 'ernie_mccoy_8bit.png',
+    'McDowell': 'johnny_mcdowell_8bit.png',
+    'McGrath': 'jack_mcgrath_8bit.png',
+    'McGuire': 'brian_mcguire_8bit.png',
+
+    'McNish': 'allan_mcnish_8bit.png',
+    'McRae': 'graham_mcrae_8bit.png',
+
 };
 
 /**
