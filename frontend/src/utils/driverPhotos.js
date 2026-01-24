@@ -682,6 +682,27 @@ const driverPhotoMap = {
     'McNish': 'allan_mcnish_8bit.png',
     'McRae': 'graham_mcrae_8bit.png',
 
+    'McWithey': 'jim_mcwithey_8bit.png',
+    'Menditeguy': 'carlos_menditeguy_8bit.png',
+    'Merhi': 'roberto_merhi_8bit.png',
+    'Merzario': 'arturo_merzario_8bit.png',
+    'Mieres': 'roberto_mieres_8bit.png',
+
+    'Migault': 'francois_migault_8bit.png',
+    'Miles': 'john_miles_8bit.png',
+    'Miles_Ken': 'ken_miles_8bit.png',
+    'Milhoux': 'andre_milhoux_8bit.png',
+    'Miller': 'chet_miller_8bit.png',
+
+    'Mitter': 'gerhard_mitter_8bit.png',
+    'Modena': 'stefano_modena_8bit.png',
+    'Monarch': 'thomas_monarch_8bit.png',
+    'Montagny': 'franck_montagny_8bit.png',
+    'Monteiro': 'tiago_monteiro_8bit.png',
+
+    'Montermini': 'andrea_montermini_8bit.png',
+    'Monteverdi': 'peter_monteverdi_8bit.png',
+
 };
 
 /**
