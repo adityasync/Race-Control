@@ -20,5 +20,8 @@ COPY --from=build /app/target/*.jar app.jar
 # Expose port
 EXPOSE 8080
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Spring Boot recommended volume for temporary files
+VOLUME /tmp
+
+# Run the application with random entropy source for faster startup
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "app.jar"]
